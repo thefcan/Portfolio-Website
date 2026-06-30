@@ -30,7 +30,7 @@ The result is a **neo-brutalist / retro-arcade** single page driven by an intera
 
 ## ✨ Highlights
 
-- **Live 3D ID card** — React Three Fiber. The card face is painted to a 2D `<canvas>` and used as a texture; the back is a fresnel-based **holographic GLSL shader**. It tilts to the pointer on the hero and spins during the boot screen.
+- **Live 3D ID card** — React Three Fiber. The card face is painted to a 2D `<canvas>` texture, framed by a fresnel-based **holographic GLSL shader** edge. It tilts to the pointer, spins during the boot screen, and **flips on click** to reveal a “decrypted” contact panel before returning on its own.
 - **Boot sequence + section transitions** — a brutalist boot loader (rotating 3D card, decrypting name, progress bar) on first paint, plus a quick transition screen when you jump between sections.
 - **Bilingual, EN default** — a tiny i18n layer with an `EN / TR` toggle (persisted). Browser auto-translation is **disabled on purpose**, so technical terms stay in their original form (no “Docker → liman işçisi”).
 - **Neo-brutalist design system** — thick black borders, hard neon offset shadows, zero radius, arcade marquee, scanlines and a terminal “decrypt” text effect — all from a Tailwind v4 CSS-first `@theme`.
@@ -48,6 +48,8 @@ The result is a **neo-brutalist / retro-arcade** single page driven by an intera
 | <img src="docs/screenshots/04-skills.png" width="420" /> | <img src="docs/screenshots/05-projects.png" width="420" /> |
 | **Contact** | **Turkish mode** |
 | <img src="docs/screenshots/06-contact.png" width="420" /> | <img src="docs/screenshots/07-hero-tr.png" width="420" /> |
+| **Card back — click to flip** | **Full page** |
+| <img src="docs/screenshots/08-card-back.png" width="420" /> | <img src="docs/screenshots/00-full.png" width="420" /> |
 
 ## 🧱 Tech Stack
 

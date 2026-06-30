@@ -199,6 +199,84 @@ function drawCardFace(canvas: HTMLCanvasElement, photo: HTMLImageElement | null)
   ctx.fillText(profile.site, W / 2, 1028)
 }
 
+// the "decrypted" back of the card — revealed on click
+function drawCardBack(canvas: HTMLCanvasElement) {
+  const W = 768
+  const H = 1075
+  canvas.width = W
+  canvas.height = H
+  const ctx = canvas.getContext("2d")!
+  ctx.clearRect(0, 0, W, H)
+
+  ctx.fillStyle = C.paper
+  ctx.fillRect(0, 0, W, H)
+  ctx.strokeStyle = C.ink
+  ctx.lineWidth = 16
+  ctx.strokeRect(8, 8, W - 16, H - 16)
+
+  // header bar (cyan, to read as "the other side")
+  ctx.fillStyle = C.cyan
+  ctx.fillRect(24, 24, W - 48, 104)
+  ctx.fillStyle = C.ink
+  ctx.fillRect(24, 124, W - 48, 8)
+  ctx.font = "700 38px 'Courier New', monospace"
+  ctx.textBaseline = "middle"
+  ctx.textAlign = "left"
+  ctx.fillStyle = C.ink
+  ctx.fillText("// DECRYPTED", 44, 78)
+  ctx.textAlign = "right"
+  ctx.fillText("ID·2026", W - 44, 78)
+
+  // contact rows
+  const rows: [string, string][] = [
+    ["GITHUB", "@thefcan"],
+    ["LINKEDIN", "/furkankarafil"],
+    ["EMAIL", profile.email],
+    ["WEB", profile.site],
+  ]
+  let y = 252
+  for (const [label, val] of rows) {
+    // diamond marker
+    ctx.fillStyle = C.hot
+    ctx.save()
+    ctx.translate(74, y + 4)
+    ctx.rotate(Math.PI / 4)
+    ctx.fillRect(-11, -11, 22, 22)
+    ctx.restore()
+    ctx.textBaseline = "alphabetic"
+    ctx.textAlign = "left"
+    ctx.fillStyle = "#7a7a7a"
+    ctx.font = "700 22px 'Courier New', monospace"
+    ctx.fillText(label, 114, y - 6)
+    ctx.fillStyle = C.ink
+    ctx.font = "700 31px 'Courier New', monospace"
+    ctx.fillText(val, 114, y + 32)
+    ctx.strokeStyle = "rgba(11,11,13,0.14)"
+    ctx.lineWidth = 2
+    ctx.beginPath()
+    ctx.moveTo(44, y + 66)
+    ctx.lineTo(W - 44, y + 66)
+    ctx.stroke()
+    y += 130
+  }
+
+  // barcode accent
+  drawBarcode(ctx, 114, y + 4, W - 228, 40, "CONNECTFURKAN2026")
+
+  // tap hint strip
+  ctx.fillStyle = C.acid
+  ctx.fillRect(80, H - 158, W - 160, 56)
+  ctx.fillStyle = C.ink
+  ctx.textAlign = "center"
+  ctx.textBaseline = "middle"
+  ctx.font = "700 26px 'Courier New', monospace"
+  ctx.fillText("TAP TO FLIP BACK", W / 2, H - 130)
+
+  // footer url
+  ctx.font = "700 26px 'Courier New', monospace"
+  ctx.fillText(profile.site, W / 2, H - 58)
+}
+
 function useCardTexture() {
   const texture = useMemo(() => {
     const canvas = document.createElement("canvas")
@@ -222,6 +300,17 @@ function useCardTexture() {
   }, [texture])
 
   return texture
+}
+
+function useCardBackTexture() {
+  return useMemo(() => {
+    const canvas = document.createElement("canvas")
+    drawCardBack(canvas)
+    const tex = new THREE.CanvasTexture(canvas)
+    tex.colorSpace = THREE.SRGBColorSpace
+    tex.anisotropy = 8
+    return tex
+  }, [])
 }
 
 /* ------------------------------------------------------------------ */
@@ -263,12 +352,43 @@ const holoFragment = /* glsl */ `
 /* ------------------------------------------------------------------ */
 function CardMesh({ mode, reduced }: { mode: "loading" | "hero"; reduced?: boolean }) {
   const group = useRef<THREE.Group>(null)
-  const texture = useCardTexture()
+  const frontTex = useCardTexture()
+  const backTex = useCardBackTexture()
   const pointer = useGlobalPointer()
   const uniforms = useMemo(() => ({ uTime: { value: 0 } }), [])
 
+  // flip-to-back interaction (hero only)
+  const flip = useRef(0) // current angle, lerps toward target
+  const flipTarget = useRef(0) // 0 = front, π = back
+  const parY = useRef(0)
+  const parX = useRef(0)
+  const timer = useRef<ReturnType<typeof setTimeout> | undefined>(undefined)
+
   const W = 2.3
   const H = 3.22
+
+  const setCursor = (c: string) => {
+    if (typeof document !== "undefined") document.body.style.cursor = c
+  }
+  const onCardClick = (e: { stopPropagation: () => void }) => {
+    if (mode !== "hero") return
+    e.stopPropagation()
+    flipTarget.current = flipTarget.current === 0 ? Math.PI : 0
+    if (timer.current) clearTimeout(timer.current)
+    if (flipTarget.current !== 0) {
+      // auto-return to the front after a few seconds
+      timer.current = setTimeout(() => {
+        flipTarget.current = 0
+      }, 4200)
+    }
+  }
+  useEffect(
+    () => () => {
+      if (timer.current) clearTimeout(timer.current)
+      setCursor("")
+    },
+    [],
+  )
 
   useFrame((state, dt) => {
     const t = state.clock.elapsedTime
@@ -285,34 +405,53 @@ function CardMesh({ mode, reduced }: { mode: "loading" | "hero"; reduced?: boole
       const amp = reduced ? 0.4 : 1
       const ty = pointer.current.x * 0.6 * amp
       const tx = -pointer.current.y * 0.4 * amp
-      g.rotation.y += (ty - g.rotation.y) * 0.07
-      g.rotation.x += (tx - g.rotation.x) * 0.07
+      parY.current += (ty - parY.current) * 0.07
+      parX.current += (tx - parX.current) * 0.07
+      flip.current += (flipTarget.current - flip.current) * Math.min(1, d * 7)
+      g.rotation.y = parY.current + flip.current
+      g.rotation.x = parX.current
       g.position.y = Math.sin(t * 1.0) * 0.07 * k
     }
   })
 
   return (
     <group ref={group}>
-      {/* holographic back */}
-      <mesh position={[0, 0, -0.09]}>
-        <planeGeometry args={[W * 1.07, H * 1.05]} />
-        <shaderMaterial vertexShader={holoVertex} fragmentShader={holoFragment} uniforms={uniforms} />
-      </mesh>
-      {/* black edge / thickness */}
-      <mesh position={[0, 0, -0.04]}>
-        <planeGeometry args={[W * 1.015, H * 1.012]} />
-        <meshBasicMaterial color="#000000" />
-      </mesh>
-      {/* face */}
-      <mesh>
-        <planeGeometry args={[W, H]} />
-        <meshBasicMaterial map={texture} toneMapped={false} />
-      </mesh>
-      {/* subtle sheen */}
-      <mesh position={[0, 0, 0.02]}>
-        <planeGeometry args={[W, H]} />
-        <meshBasicMaterial color="#ffffff" transparent opacity={0.05} blending={THREE.AdditiveBlending} depthWrite={false} />
-      </mesh>
+      {/* FRONT stack — faces +z, visible when not flipped */}
+      <group>
+        <mesh position={[0, 0, -0.06]}>
+          <planeGeometry args={[W * 1.07, H * 1.05]} />
+          <shaderMaterial vertexShader={holoVertex} fragmentShader={holoFragment} uniforms={uniforms} />
+        </mesh>
+        <mesh position={[0, 0, -0.03]}>
+          <planeGeometry args={[W * 1.015, H * 1.012]} />
+          <meshBasicMaterial color="#000000" />
+        </mesh>
+        <mesh onClick={onCardClick} onPointerOver={() => setCursor("pointer")} onPointerOut={() => setCursor("")}>
+          <planeGeometry args={[W, H]} />
+          <meshBasicMaterial map={frontTex} toneMapped={false} />
+        </mesh>
+        <mesh position={[0, 0, 0.02]}>
+          <planeGeometry args={[W, H]} />
+          <meshBasicMaterial color="#ffffff" transparent opacity={0.05} blending={THREE.AdditiveBlending} depthWrite={false} />
+        </mesh>
+      </group>
+
+      {/* BACK stack — pre-rotated 180°; back-face culling hides it until flipped */}
+      <group rotation={[0, Math.PI, 0]}>
+        <mesh position={[0, 0, -0.06]}>
+          <planeGeometry args={[W * 1.07, H * 1.05]} />
+          <shaderMaterial vertexShader={holoVertex} fragmentShader={holoFragment} uniforms={uniforms} />
+        </mesh>
+        <mesh position={[0, 0, -0.03]}>
+          <planeGeometry args={[W * 1.015, H * 1.012]} />
+          <meshBasicMaterial color="#000000" />
+        </mesh>
+        <mesh onClick={onCardClick} onPointerOver={() => setCursor("pointer")} onPointerOut={() => setCursor("")}>
+          <planeGeometry args={[W, H]} />
+          <meshBasicMaterial map={backTex} toneMapped={false} />
+        </mesh>
+      </group>
+
       {/* lanyard hole */}
       <mesh position={[0, H / 2 + 0.16, 0]}>
         <ringGeometry args={[0.07, 0.13, 28]} />
