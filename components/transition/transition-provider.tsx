@@ -50,6 +50,7 @@ function MiniCard() {
 export function TransitionProvider({ children }: { children: React.ReactNode }) {
   const { t } = useLang()
   const [booting, setBooting] = useState(true)
+  const [skipBoot, setSkipBoot] = useState(false)
   const [progress, setProgress] = useState(0)
   const [overlay, setOverlay] = useState<{ active: boolean; label: string }>({
     active: false,
@@ -57,8 +58,17 @@ export function TransitionProvider({ children }: { children: React.ReactNode }) 
   })
   const navLock = useRef(false)
 
-  // boot sequence
+  // boot sequence — runs once per browser-tab session, skipped on repeat loads
   useEffect(() => {
+    let alreadyBooted = false
+    try {
+      alreadyBooted = sessionStorage.getItem("fck:booted") === "1"
+    } catch {}
+    if (alreadyBooted) {
+      setSkipBoot(true)
+      setBooting(false)
+      return
+    }
     const DURATION = 2400
     const t0 = performance.now()
     let raf = 0
@@ -66,7 +76,12 @@ export function TransitionProvider({ children }: { children: React.ReactNode }) 
       const p = Math.min(100, ((now - t0) / DURATION) * 100)
       setProgress(p)
       if (p < 100) raf = requestAnimationFrame(tick)
-      else setTimeout(() => setBooting(false), 360)
+      else {
+        try {
+          sessionStorage.setItem("fck:booted", "1")
+        } catch {}
+        setTimeout(() => setBooting(false), 360)
+      }
     }
     raf = requestAnimationFrame(tick)
     return () => cancelAnimationFrame(raf)
@@ -102,6 +117,7 @@ export function TransitionProvider({ children }: { children: React.ReactNode }) 
       {children}
 
       {/* ---------- BOOT LOADER ---------- */}
+      {!skipBoot && (
       <AnimatePresence>
         {booting && (
           <motion.div
@@ -148,6 +164,7 @@ export function TransitionProvider({ children }: { children: React.ReactNode }) 
           </motion.div>
         )}
       </AnimatePresence>
+      )}
 
       {/* ---------- SECTION TRANSITION ---------- */}
       <AnimatePresence>
