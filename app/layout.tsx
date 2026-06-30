@@ -65,14 +65,7 @@ export const metadata: Metadata = {
   // the site ships its own EN/TR switch — stop browsers from auto-translating
   // (which mangles tech terms: Docker → "liman işçisi", FCK → "siktir git", …)
   other: { google: "notranslate" },
-  icons: {
-    icon: [
-      { url: "/icon-light-32x32.png", media: "(prefers-color-scheme: light)" },
-      { url: "/icon-dark-32x32.png", media: "(prefers-color-scheme: dark)" },
-      { url: "/icon.svg", type: "image/svg+xml" },
-    ],
-    apple: "/apple-icon.png",
-  },
+  // favicon comes from app/icon.svg (brand F mark) via the App Router convention
 }
 
 export const viewport: Viewport = {
