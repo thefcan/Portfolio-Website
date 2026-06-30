@@ -1,7 +1,7 @@
 "use client"
 
 import dynamic from "next/dynamic"
-import { ArrowRight, Github, Mail, MousePointer2 } from "lucide-react"
+import { ArrowRight, Github, Mail } from "lucide-react"
 import { useNav } from "@/components/transition/transition-provider"
 import { useLang } from "@/components/i18n/lang-provider"
 import { ui } from "@/lib/i18n"
@@ -101,10 +101,6 @@ export function HeroSection() {
         <div className="relative">
           <div className="relative mx-auto h-[420px] w-full max-w-[360px] sm:h-[460px]">
             <IdCard3D mode="hero" className="h-full w-full" />
-          </div>
-          <div className="mt-1 flex items-center justify-center gap-2 font-mono text-[11px] text-muted-foreground">
-            <MousePointer2 className="h-3 w-3" />
-            {t(ui.hero_hint)}
           </div>
         </div>
       </div>
