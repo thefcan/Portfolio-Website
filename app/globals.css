@@ -3,92 +3,111 @@
 
 @custom-variant dark (&:is(.dark *));
 
+/*
+  ============================================================
+  FURKAN CAN KARAFIL — Portfolio
+  Design language: NEO-BRUTALIST / RETRO-ARCADE
+  - Ink page, cream "paper" panels, neon accent hard-shadows
+  - Thick black borders, zero radius, bold display type
+  ============================================================
+*/
+
 :root {
-  --background: oklch(0.8452 0 0);
-  --foreground: oklch(0.2393 0 0);
-  --card: oklch(0.7572 0 0);
-  --card-foreground: oklch(0.2393 0 0);
-  --popover: oklch(0.7572 0 0);
-  --popover-foreground: oklch(0.2393 0 0);
-  --primary: oklch(0.5016 0.1887 27.4816);
-  --primary-foreground: oklch(1.0000 0 0);
-  --secondary: oklch(0.4955 0.0896 126.1858);
-  --secondary-foreground: oklch(1.0000 0 0);
-  --muted: oklch(0.7826 0 0);
-  --muted-foreground: oklch(0.4091 0 0);
-  --accent: oklch(0.5880 0.0993 245.7394);
-  --accent-foreground: oklch(1.0000 0 0);
-  --destructive: oklch(0.7076 0.1975 46.4558);
-  --destructive-foreground: oklch(0 0 0);
-  --border: oklch(0.4313 0 0);
-  --input: oklch(0.4313 0 0);
-  --ring: oklch(0.5016 0.1887 27.4816);
-  --chart-1: oklch(0.5016 0.1887 27.4816);
-  --chart-2: oklch(0.4955 0.0896 126.1858);
-  --chart-3: oklch(0.5880 0.0993 245.7394);
-  --chart-4: oklch(0.7076 0.1975 46.4558);
-  --chart-5: oklch(0.5656 0.0431 40.4319);
+  /* ---- Brutalist / retro core palette ---- */
+  --ink: #0e0e11; /* page background */
+  --ink-2: #16161a; /* raised dark surface */
+  --paper: #f4f0e4; /* cream panel */
+  --paper-2: #ffffff;
+
+  --acid: #c6ff3a; /* primary accent — acid lime */
+  --hot: #ff2e88; /* hot magenta */
+  --cyan: #34e2ff; /* electric cyan */
+  --violet: #9d7bff; /* soft violet */
+  --amber: #ffb000; /* retro amber */
+
+  /* ---- shadcn/ui token bridge (so existing ui/* still works) ---- */
+  --background: var(--ink);
+  --foreground: var(--paper);
+  --card: var(--ink-2);
+  --card-foreground: var(--paper);
+  --popover: var(--ink-2);
+  --popover-foreground: var(--paper);
+  --primary: var(--acid);
+  --primary-foreground: #0b0b0d;
+  --secondary: var(--hot);
+  --secondary-foreground: #0b0b0d;
+  --muted: #1d1d22;
+  --muted-foreground: #9a9aa3;
+  --accent: var(--cyan);
+  --accent-foreground: #0b0b0d;
+  --destructive: #ff3b30;
+  --destructive-foreground: #ffffff;
+  --border: #000000;
+  --input: #2a2a30;
+  --ring: var(--acid);
+
+  --chart-1: var(--acid);
+  --chart-2: var(--hot);
+  --chart-3: var(--cyan);
+  --chart-4: var(--amber);
+  --chart-5: var(--violet);
+
   --radius: 0px;
-  --sidebar: oklch(0.7572 0 0);
-  --sidebar-foreground: oklch(0.2393 0 0);
-  --sidebar-primary: oklch(0.5016 0.1887 27.4816);
-  --sidebar-primary-foreground: oklch(1.0000 0 0);
-  --sidebar-accent: oklch(0.5880 0.0993 245.7394);
-  --sidebar-accent-foreground: oklch(1.0000 0 0);
-  --sidebar-border: oklch(0.4313 0 0);
-  --sidebar-ring: oklch(0.5016 0.1887 27.4816);
-  --shadow-x: 0px;
-  --shadow-y: 2px;
-  --shadow-blur: 4px;
-  --shadow-spread: 0px;
-  --shadow-opacity: 0.4;
-  --shadow-color: #000000;
+
+  --sidebar: var(--ink-2);
+  --sidebar-foreground: var(--paper);
+  --sidebar-primary: var(--acid);
+  --sidebar-primary-foreground: #0b0b0d;
+  --sidebar-accent: var(--cyan);
+  --sidebar-accent-foreground: #0b0b0d;
+  --sidebar-border: #000000;
+  --sidebar-ring: var(--acid);
+
+  /* ---- Brutalist geometry ---- */
+  --brut-bw: 3px; /* border width */
+  --bs: #000000; /* per-element hard-shadow color (override inline) */
 }
 
+/* Single-theme by design: dark === root brutalist palette. */
 .dark {
-  --background: hsl(0 0% 3.9%);
-  --foreground: hsl(0 0% 98%);
-  --card: hsl(0 0% 3.9%);
-  --card-foreground: oklch(0.9067 0 0);
-  --popover: hsl(0 0% 3.9%);
-  --popover-foreground: oklch(0.9067 0 0);
-  --primary: hsl(0 72.2% 50.6%);
-  --primary-foreground: oklch(1.0000 0 0);
-  --secondary: hsl(0 0% 14.9%);
-  --secondary-foreground: oklch(0 0 0);
-  --muted: hsl(0 0% 14.9%);
-  --muted-foreground: oklch(0.7058 0 0);
-  --accent: hsl(0 0% 14.9%);
-  --accent-foreground: oklch(0 0 0);
-  --destructive: hsl(0 62.8% 30.6%);
-  --destructive-foreground: oklch(0 0 0);
-  --border: hsl(0 0% 14.9%);
-  --input: hsl(0 0% 14.9%);
-  --ring: hsl(0 72.2% 50.6%);
-  --chart-1: hsl(0 72.2% 50.6%);
-  --chart-2: hsl(12 76% 61%);
-  --chart-3: hsl(25 83% 53%);
-  --chart-4: hsl(349 89% 60%);
-  --chart-5: hsl(320 65% 52%);
-  --sidebar: hsl(240 5.9% 10%);
-  --sidebar-foreground: oklch(0.9067 0 0);
-  --sidebar-primary: oklch(0.6083 0.2090 27.0276);
-  --sidebar-primary-foreground: oklch(1.0000 0 0);
-  --sidebar-accent: oklch(0.7482 0.1235 244.7492);
-  --sidebar-accent-foreground: oklch(0 0 0);
-  --sidebar-border: oklch(0.4091 0 0);
-  --sidebar-ring: oklch(0.6083 0.2090 27.0276);
-  --shadow-x: 0px;
-  --shadow-y: 0px;
-  --shadow-blur: 4px;
-  --shadow-spread: 0px;
-  --shadow-opacity: 0.4;
-  --shadow-color: rgb(250, 0, 0);
+  --background: var(--ink);
+  --foreground: var(--paper);
+  --card: var(--ink-2);
+  --card-foreground: var(--paper);
+  --popover: var(--ink-2);
+  --popover-foreground: var(--paper);
+  --primary: var(--acid);
+  --primary-foreground: #0b0b0d;
+  --secondary: var(--hot);
+  --secondary-foreground: #0b0b0d;
+  --muted: #1d1d22;
+  --muted-foreground: #9a9aa3;
+  --accent: var(--cyan);
+  --accent-foreground: #0b0b0d;
+  --destructive: #ff3b30;
+  --destructive-foreground: #ffffff;
+  --border: #000000;
+  --input: #2a2a30;
+  --ring: var(--acid);
 }
 
 @theme inline {
-  --font-sans: 'Oxanium', 'Oxanium Fallback';
-  --font-mono: 'Source Code Pro', 'Source Code Pro Fallback';
+  /* fonts (wired via next/font CSS variables in layout.tsx) */
+  --font-sans: var(--font-grotesk), ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-grotesk), ui-sans-serif, sans-serif;
+  --font-mono: var(--font-jetbrains), ui-monospace, 'Courier New', monospace;
+
+  /* expose brutalist palette as utilities (bg-acid, text-hot, border-cyan…) */
+  --color-ink: var(--ink);
+  --color-ink-2: var(--ink-2);
+  --color-paper: var(--paper);
+  --color-acid: var(--acid);
+  --color-hot: var(--hot);
+  --color-cyan: var(--cyan);
+  --color-violet: var(--violet);
+  --color-amber: var(--amber);
+
+  /* shadcn bridge */
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-card: var(--card);
@@ -113,10 +132,10 @@
   --color-chart-3: var(--chart-3);
   --color-chart-4: var(--chart-4);
   --color-chart-5: var(--chart-5);
-  --radius-sm: calc(var(--radius) - 4px);
-  --radius-md: calc(var(--radius) - 2px);
-  --radius-lg: var(--radius);
-  --radius-xl: calc(var(--radius) + 4px);
+  --radius-sm: 0px;
+  --radius-md: 0px;
+  --radius-lg: 0px;
+  --radius-xl: 0px;
   --color-sidebar: var(--sidebar);
   --color-sidebar-foreground: var(--sidebar-foreground);
   --color-sidebar-primary: var(--sidebar-primary);
@@ -125,41 +144,146 @@
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-ring: var(--sidebar-ring);
-  --font-serif: 'Source Serif 4', 'Source Serif 4 Fallback';
-  /* computed shadow variables below - do not modify */
-  --shadow-2xs: var(--shadow-x) var(--shadow-y) color-mix(in srgb, var(--shadow-color) calc(var(--shadow-opacity) * 100%), transparent);
-  --shadow-xs: var(--shadow-x) var(--shadow-y) var(--shadow-blur) var(--shadow-spread) color-mix(in srgb, var(--shadow-color) calc(var(--shadow-opacity) * 100%), transparent);
-  --shadow-sm: var(--shadow-x) var(--shadow-y) calc(var(--shadow-blur) * 1.5) var(--shadow-spread) color-mix(in srgb, var(--shadow-color) calc(var(--shadow-opacity) * 100%), transparent);
-  --shadow-md: calc(var(--shadow-x) * 2) calc(var(--shadow-y) * 2) calc(var(--shadow-blur) * 3) calc(var(--shadow-spread) - 1px) color-mix(in srgb, var(--shadow-color) calc(var(--shadow-opacity) * 100%), transparent);
-  --shadow-lg: calc(var(--shadow-x) * 4) calc(var(--shadow-y) * 4) calc(var(--shadow-blur) * 5) calc(var(--shadow-spread) - 3px) color-mix(in srgb, var(--shadow-color) calc(var(--shadow-opacity) * 100%), transparent);
-  --shadow-xl: calc(var(--shadow-x) * 6) calc(var(--shadow-y) * 6) calc(var(--shadow-blur) * 7) calc(var(--shadow-spread) - 5px) color-mix(in srgb, var(--shadow-color) calc(var(--shadow-opacity) * 100%), transparent);
-  --shadow-2xl: calc(var(--shadow-x) * 8) calc(var(--shadow-y) * 8) calc(max(0px, var(--shadow-blur) * 9 - 8px)) calc(var(--shadow-spread) - 12px) color-mix(in srgb, var(--shadow-color) calc(var(--shadow-opacity) * 250%), transparent);
-  --shadow: var(--shadow-md);
-  --color-shadow-color: var(--shadow-color);
-  --shadow-opacity: var(--shadow-opacity);
-  --shadow-spread: var(--shadow-spread);
-  --shadow-blur: var(--shadow-blur);
-  --shadow-y: var(--shadow-y);
-  --shadow-x: var(--shadow-x);
+
+  /* animations */
+  --animate-blink: blink 1s step-end infinite;
+  --animate-float: float 6s ease-in-out infinite;
+  --animate-marquee: marquee 30s linear infinite;
+  --animate-scan: scan 6s linear infinite;
+  --animate-spin-slow: spin 14s linear infinite;
+  --animate-spin-y: spinY 1.4s linear infinite;
 }
 
 @layer base {
   * {
     @apply border-border outline-ring/50;
   }
+  html {
+    scroll-behavior: smooth;
+  }
   body {
     @apply bg-background text-foreground;
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+  }
+  ::selection {
+    background: var(--acid);
+    color: #0b0b0d;
+  }
+  /* chunky retro scrollbar */
+  ::-webkit-scrollbar {
+    width: 12px;
+    height: 12px;
+  }
+  ::-webkit-scrollbar-track {
+    background: var(--ink);
+  }
+  ::-webkit-scrollbar-thumb {
+    background: var(--acid);
+    border: 3px solid var(--ink);
   }
 }
 
+@layer components {
+  /* Brutalist panel: thick black border + hard neon shadow.
+     Override accent with style={{ ['--bs']: 'var(--hot)' }} or class. */
+  .brutal {
+    border: var(--brut-bw) solid #000;
+    box-shadow: 6px 6px 0 0 var(--bs);
+  }
+  .brutal-sm {
+    border: var(--brut-bw) solid #000;
+    box-shadow: 4px 4px 0 0 var(--bs);
+  }
+  .brutal-lg {
+    border: var(--brut-bw) solid #000;
+    box-shadow: 10px 10px 0 0 var(--bs);
+  }
+  /* hover lift: press toward shadow */
+  .brutal-press {
+    transition: transform 0.12s ease, box-shadow 0.12s ease;
+  }
+  .brutal-press:hover {
+    transform: translate(3px, 3px);
+    box-shadow: 3px 3px 0 0 var(--bs);
+  }
+  .brutal-press:active {
+    transform: translate(6px, 6px);
+    box-shadow: 0 0 0 0 var(--bs);
+  }
+}
+
+@layer utilities {
+  /* outlined display text (arcade marquee feel) */
+  .text-stroke {
+    -webkit-text-stroke: 2px #000;
+    paint-order: stroke fill;
+  }
+  .text-stroke-paper {
+    -webkit-text-stroke: 2px var(--paper);
+    color: transparent;
+    paint-order: stroke fill;
+  }
+
+  /* retro dotted/line grid background */
+  .retro-grid {
+    background-image:
+      linear-gradient(to right, rgba(244, 240, 228, 0.06) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(244, 240, 228, 0.06) 1px, transparent 1px);
+    background-size: 44px 44px;
+  }
+  .retro-dots {
+    background-image: radial-gradient(rgba(244, 240, 228, 0.12) 1.2px, transparent 1.2px);
+    background-size: 22px 22px;
+  }
+
+  /* CRT scanline overlay (apply to an absolutely-positioned layer) */
+  .scanlines {
+    background: repeating-linear-gradient(
+      to bottom,
+      rgba(0, 0, 0, 0) 0px,
+      rgba(0, 0, 0, 0) 2px,
+      rgba(0, 0, 0, 0.22) 3px,
+      rgba(0, 0, 0, 0) 4px
+    );
+  }
+}
+
+/* ---- keyframes ---- */
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-12px); }
+}
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+@keyframes scan {
+  from { transform: translateY(-100%); }
+  to { transform: translateY(100%); }
+}
+@keyframes spinY {
+  from { transform: rotateY(0deg); }
+  to { transform: rotateY(360deg); }
+}
 @keyframes wave {
-  0%, 100% {
-    transform: rotate(0deg);
-  }
-  25% {
-    transform: rotate(20deg);
-  }
-  75% {
-    transform: rotate(-15deg);
+  0%, 100% { transform: rotate(0deg); }
+  25% { transform: rotate(20deg); }
+  75% { transform: rotate(-15deg); }
+}
+
+/* respect reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
   }
 }

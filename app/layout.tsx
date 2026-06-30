@@ -1,39 +1,83 @@
 import React from "react"
-import type { Metadata } from 'next'
+import type { Metadata, Viewport } from "next"
+import { Space_Grotesk, JetBrains_Mono } from "next/font/google"
+import { Analytics } from "@vercel/analytics/next"
+import { ThemeProvider } from "@/components/theme-provider"
+import { LangProvider } from "@/components/i18n/lang-provider"
+import { TransitionProvider } from "@/components/transition/transition-provider"
+import "./globals.css"
 
-import { Analytics } from '@vercel/analytics/next'
-import { ThemeProvider } from '@/components/theme-provider'
-import './globals.css'
-import { Inter, Oxanium as V0_Font_Oxanium, Source_Code_Pro as V0_Font_Source_Code_Pro, Source_Serif_4 as V0_Font_Source_Serif_4 } from 'next/font/google'
+const grotesk = Space_Grotesk({
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
+  variable: "--font-grotesk",
+  display: "swap",
+})
 
-// Initialize fonts
-const _oxanium = V0_Font_Oxanium({ subsets: ['latin'], weight: ["200","300","400","500","600","700","800"] })
-const _sourceCodePro = V0_Font_Source_Code_Pro({ subsets: ['latin'], weight: ["200","300","400","500","600","700","800","900"] })
-const _sourceSerif_4 = V0_Font_Source_Serif_4({ subsets: ['latin'], weight: ["200","300","400","500","600","700","800","900"] })
+const jetbrains = JetBrains_Mono({
+  subsets: ["latin"],
+  weight: ["400", "500", "700", "800"],
+  variable: "--font-jetbrains",
+  display: "swap",
+})
 
-const _inter = Inter({ subsets: ["latin"] });
+const SITE_URL = "https://furkankarafil.me"
 
 export const metadata: Metadata = {
-  title: 'Furkan Can Karafil | Computer Engineering Student',
-  description: 'Senior Computer Engineering Student specializing in Embedded Systems & DevOps. Building scalable systems with C, FreeRTOS, and Docker.',
-  generator: 'v0.app',
+  metadataBase: new URL(SITE_URL),
+  title: {
+    default: "Furkan Can Karafil — Computer Engineer · Games + Backend/DevOps",
+    template: "%s · Furkan Can Karafil",
+  },
+  description:
+    "Furkan Can Karafil — Computer Engineer building games (Unity/C#) and scalable backend & DevOps systems (Go, NestJS, Docker, Kubernetes). Portfolio, projects and contact.",
+  keywords: [
+    "Furkan Can Karafil",
+    "Computer Engineer",
+    "Game Developer",
+    "Unity",
+    "C#",
+    "Backend",
+    "DevOps",
+    "Go",
+    "Kubernetes",
+    "Portfolio",
+  ],
+  authors: [{ name: "Furkan Can Karafil", url: SITE_URL }],
+  creator: "Furkan Can Karafil",
+  alternates: { canonical: SITE_URL },
+  openGraph: {
+    type: "website",
+    url: SITE_URL,
+    siteName: "Furkan Can Karafil",
+    title: "Furkan Can Karafil — Computer Engineer · Games + Backend/DevOps",
+    description:
+      "Games (Unity/C#) + Backend/DevOps (Go, NestJS, Kubernetes). Interactive 3D portfolio.",
+    locale: "en_US",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Furkan Can Karafil — Computer Engineer",
+    description: "Games + Backend/DevOps engineer. Interactive 3D portfolio.",
+    creator: "@thefcan",
+  },
+  generator: "Next.js",
+  // the site ships its own EN/TR switch — stop browsers from auto-translating
+  // (which mangles tech terms: Docker → "liman işçisi", FCK → "siktir git", …)
+  other: { google: "notranslate" },
   icons: {
     icon: [
-      {
-        url: '/icon-light-32x32.png',
-        media: '(prefers-color-scheme: light)',
-      },
-      {
-        url: '/icon-dark-32x32.png',
-        media: '(prefers-color-scheme: dark)',
-      },
-      {
-        url: '/icon.svg',
-        type: 'image/svg+xml',
-      },
+      { url: "/icon-light-32x32.png", media: "(prefers-color-scheme: light)" },
+      { url: "/icon-dark-32x32.png", media: "(prefers-color-scheme: dark)" },
+      { url: "/icon.svg", type: "image/svg+xml" },
     ],
-    apple: '/apple-icon.png',
+    apple: "/apple-icon.png",
   },
+}
+
+export const viewport: Viewport = {
+  themeColor: "#0e0e11",
+  colorScheme: "dark",
 }
 
 export default function RootLayout({
@@ -42,15 +86,17 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning>
-      <body className={`font-sans antialiased`}>
+    <html lang="en" translate="no" suppressHydrationWarning>
+      <body className={`notranslate ${grotesk.variable} ${jetbrains.variable} font-sans antialiased`}>
         <ThemeProvider
           attribute="class"
           defaultTheme="dark"
-          enableSystem
+          forcedTheme="dark"
           disableTransitionOnChange
         >
-          {children}
+          <LangProvider>
+            <TransitionProvider>{children}</TransitionProvider>
+          </LangProvider>
         </ThemeProvider>
         <Analytics />
       </body>
