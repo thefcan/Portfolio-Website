@@ -1,57 +1,122 @@
 "use client"
 
-import { useEffect, useState } from "react"
-import Link from "next/link"
-import { ArrowRight, Mail } from "lucide-react"
-import { Button } from "@/components/ui/button"
+import dynamic from "next/dynamic"
+import { ArrowRight, Github, Mail, MousePointer2 } from "lucide-react"
+import { useNav } from "@/components/transition/transition-provider"
+import { useLang } from "@/components/i18n/lang-provider"
+import { ui } from "@/lib/i18n"
+import { profile } from "@/lib/profile"
+import { IdCardStatic } from "@/components/three/id-card-3d"
+
+// keep the WebGL canvas out of the server bundle
+const IdCard3D = dynamic(
+  () => import("@/components/three/id-card-3d").then((m) => m.IdCard3D),
+  { ssr: false, loading: () => <IdCardStatic className="h-full w-full" /> },
+)
+
+const TICKER = [
+  "UNITY",
+  "C#",
+  "GO",
+  "NEST.JS",
+  "NEXT.JS",
+  "KUBERNETES",
+  "DOCKER",
+  "REDIS",
+  "POSTGRES",
+  "REACT",
+  "TYPESCRIPT",
+  "FREERTOS",
+]
 
 export function HeroSection() {
-  const [isVisible, setIsVisible] = useState(false)
-
-  useEffect(() => {
-    setIsVisible(true)
-  }, [])
+  const { goTo } = useNav()
+  const { lang, t } = useLang()
 
   return (
-    <section
-      id="home"
-      className="min-h-screen flex items-center justify-center pt-16 relative overflow-hidden"
-    >
-      {/* Subtle gradient background */}
-      <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-primary/10 pointer-events-none" />
-      
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative">
-        <div
-          className={`max-w-3xl mx-auto text-center transition-all duration-1000 ${
-            isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
-          }`}
-        >
-          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-foreground mb-6 text-balance">
-            {"Hi, I'm Furkan Can Karafil"} <span className="inline-block animate-[wave_2s_ease-in-out_infinite]">👋</span>
-          </h1>
-          
-          <p className="text-lg sm:text-xl text-primary font-medium mb-4">
-            Computer Engineering Student at KFAU, Turkiye
-          </p>
-          
-          <p className="text-base sm:text-lg text-muted-foreground mb-8 max-w-2xl mx-auto text-pretty">
-            Interested in writing code and currently learning. Building real-world applications from web APIs to Android apps.
-          </p>
-          
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button asChild size="lg" className="group">
-              <Link href="#projects">
-                View Projects
-                <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
-              </Link>
-            </Button>
-            <Button asChild variant="outline" size="lg">
-              <Link href="#contact">
-                <Mail className="mr-2 h-4 w-4" />
-                Contact Me
-              </Link>
-            </Button>
+    <section id="top" className="relative overflow-hidden border-b-[3px] border-black">
+      <div className="retro-grid pointer-events-none absolute inset-0 opacity-60" />
+      {/* accent corner blobs */}
+      <div className="pointer-events-none absolute -right-24 -top-24 h-72 w-72 rounded-full bg-hot/20 blur-3xl" />
+      <div className="pointer-events-none absolute -bottom-24 left-1/3 h-72 w-72 rounded-full bg-cyan/10 blur-3xl" />
+
+      <div className="relative mx-auto grid max-w-6xl items-center gap-10 px-4 py-16 sm:py-20 lg:grid-cols-[1.1fr_0.9fr] lg:py-24">
+        {/* ---- left: copy ---- */}
+        <div>
+          <div
+            className="inline-flex items-center gap-2 border-[3px] border-black bg-paper px-3 py-1 font-mono text-[11px] font-bold text-ink"
+            style={{ ["--bs" as string]: "var(--acid)" }}
+          >
+            <span className="h-2 w-2 animate-blink bg-hot" />
+            {t(ui.hero_available)}
           </div>
+
+          <p className="mt-5 font-mono text-sm font-bold text-acid sm:text-base">{t(ui.hero_greeting)}</p>
+
+          <h1 className="mt-2 font-black uppercase leading-[0.92] tracking-tight">
+            <span className="block text-5xl sm:text-6xl lg:text-7xl">{profile.firstName}</span>
+            <span className="block text-5xl text-acid sm:text-6xl lg:text-7xl">{profile.lastName}</span>
+          </h1>
+
+          <div className="mt-5 flex flex-wrap items-center gap-2">
+            <span className="bg-hot px-3 py-1 font-mono text-sm font-bold uppercase text-white">{t(profile.role)}</span>
+            <span className="font-mono text-sm font-bold text-paper">// {profile.tagline}</span>
+          </div>
+
+          <p className="mt-5 max-w-xl text-pretty text-base leading-relaxed text-muted-foreground sm:text-lg">
+            {t(ui.hero_bio)}
+          </p>
+
+          <div className="mt-7 flex flex-wrap gap-3">
+            <button
+              onClick={() => goTo("projects", t(ui.nav_projects))}
+              className="group inline-flex items-center gap-2 border-[3px] border-black bg-acid px-5 py-3 font-mono text-sm font-bold text-ink brutal-press"
+              style={{ ["--bs" as string]: "#000" }}
+            >
+              {t(ui.hero_cta_projects)}
+              <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
+            </button>
+            <button
+              onClick={() => goTo("contact", t(ui.nav_contact))}
+              className="inline-flex items-center gap-2 border-[3px] border-black bg-paper px-5 py-3 font-mono text-sm font-bold text-ink brutal-press"
+              style={{ ["--bs" as string]: "var(--cyan)" }}
+            >
+              <Mail className="h-4 w-4" />
+              {t(ui.hero_cta_contact)}
+            </button>
+            <a
+              href={profile.links.github}
+              target="_blank"
+              rel="noreferrer"
+              className="inline-flex items-center gap-2 border-[3px] border-black bg-ink px-5 py-3 font-mono text-sm font-bold text-paper brutal-press"
+              style={{ ["--bs" as string]: "var(--hot)" }}
+            >
+              <Github className="h-4 w-4" />
+              GITHUB
+            </a>
+          </div>
+        </div>
+
+        {/* ---- right: 3D card ---- */}
+        <div className="relative">
+          <div className="relative mx-auto h-[420px] w-full max-w-[360px] sm:h-[460px]">
+            <IdCard3D mode="hero" className="h-full w-full" />
+          </div>
+          <div className="mt-1 flex items-center justify-center gap-2 font-mono text-[11px] text-muted-foreground">
+            <MousePointer2 className="h-3 w-3" />
+            {t(ui.hero_hint)}
+          </div>
+        </div>
+      </div>
+
+      {/* ---- ticker ---- */}
+      <div className="relative overflow-hidden border-t-[3px] border-black bg-acid py-2">
+        <div className="flex w-max animate-marquee whitespace-nowrap font-mono text-sm font-bold text-ink">
+          {[...TICKER, ...TICKER].map((tag, i) => (
+            <span key={i} className="mx-4 inline-flex items-center gap-4">
+              {tag} <span className="text-hot">◆</span>
+            </span>
+          ))}
         </div>
       </div>
     </section>

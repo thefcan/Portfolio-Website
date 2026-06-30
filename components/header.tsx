@@ -1,94 +1,135 @@
 "use client"
 
 import { useState } from "react"
-import Link from "next/link"
-import { Moon, Sun, Menu, X } from "lucide-react"
-import { useTheme } from "next-themes"
-import { Button } from "@/components/ui/button"
+import { Github, Linkedin, Menu, X, Languages } from "lucide-react"
+import { useNav } from "@/components/transition/transition-provider"
+import { useLang } from "@/components/i18n/lang-provider"
+import { ui } from "@/lib/i18n"
+import { profile } from "@/lib/profile"
 
-const navLinks = [
-  { name: "Home", href: "#home" },
-  { name: "About", href: "#about" },
-  { name: "Skills", href: "#skills" },
-  { name: "Projects", href: "#projects" },
-  { name: "Contact", href: "#contact" },
+const LINKS = [
+  { id: "about", label: ui.nav_about },
+  { id: "skills", label: ui.nav_skills },
+  { id: "projects", label: ui.nav_projects },
+  { id: "contact", label: ui.nav_contact },
 ]
 
+function LangToggle({ className = "" }: { className?: string }) {
+  const { lang, toggle } = useLang()
+  return (
+    <button
+      onClick={toggle}
+      aria-label="Toggle language"
+      className={`inline-flex items-center gap-1.5 border-[3px] border-black bg-paper px-2.5 font-mono text-xs font-bold text-ink brutal-press ${className}`}
+      style={{ ["--bs" as string]: "var(--violet)" }}
+    >
+      <Languages className="h-4 w-4" />
+      <span className={lang === "en" ? "text-ink" : "text-neutral-400"}>EN</span>
+      <span className="text-neutral-400">/</span>
+      <span className={lang === "tr" ? "text-ink" : "text-neutral-400"}>TR</span>
+    </button>
+  )
+}
+
 export function Header() {
-  const { theme, setTheme } = useTheme()
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+  const { goTo } = useNav()
+  const { lang } = useLang()
+  const [open, setOpen] = useState(false)
+
+  const jump = (id: string, label: string) => {
+    setOpen(false)
+    goTo(id, label)
+  }
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-md border-b border-border">
-      <nav className="container mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-16">
-          <Link 
-            href="#home" 
-            className="text-xl font-bold text-primary hover:opacity-80 transition-opacity"
+    <header className="sticky top-0 z-[90] border-b-[3px] border-black bg-ink/85 backdrop-blur-md">
+      <div className="mx-auto flex h-[72px] max-w-6xl items-center justify-between px-4">
+        {/* logo */}
+        <button onClick={() => jump("top", "HOME")} className="flex items-center gap-2" aria-label="Home">
+          <span
+            className="grid h-9 w-9 place-items-center border-[3px] border-black bg-acid font-black text-ink brutal-press"
+            style={{ ["--bs" as string]: "var(--hot)" }}
           >
-            FCK
-          </Link>
+            F
+          </span>
+          <span className="hidden font-mono text-sm font-bold tracking-[0.25em] sm:inline">KARAFIL</span>
+        </button>
 
-          {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center gap-8">
-            {navLinks.map((link) => (
-              <Link
-                key={link.name}
-                href={link.href}
-                className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
-              >
-                {link.name}
-              </Link>
-            ))}
-          </div>
-
-          <div className="flex items-center gap-2">
-            <Button
-              variant="ghost"
-              size="icon"
-              onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
-              className="rounded-full"
+        {/* desktop nav */}
+        <nav className="hidden items-center gap-1 md:flex">
+          {LINKS.map((l) => (
+            <button
+              key={l.id}
+              onClick={() => jump(l.id, l.label[lang])}
+              className="border-[3px] border-transparent px-3 py-2 font-mono text-xs font-bold tracking-wider transition-colors hover:border-black hover:bg-acid hover:text-ink"
             >
-              <Sun className="h-5 w-5 rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
-              <Moon className="absolute h-5 w-5 rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
-              <span className="sr-only">Toggle theme</span>
-            </Button>
+              {l.label[lang]}
+            </button>
+          ))}
+        </nav>
 
-            {/* Mobile Menu Button */}
-            <Button
-              variant="ghost"
-              size="icon"
-              className="md:hidden"
-              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            >
-              {mobileMenuOpen ? (
-                <X className="h-5 w-5" />
-              ) : (
-                <Menu className="h-5 w-5" />
-              )}
-              <span className="sr-only">Toggle menu</span>
-            </Button>
-          </div>
+        {/* desktop right cluster */}
+        <div className="hidden items-center gap-2 md:flex">
+          <LangToggle className="h-9" />
+          <a
+            href={profile.links.github}
+            target="_blank"
+            rel="noreferrer"
+            aria-label="GitHub"
+            className="grid h-9 w-9 place-items-center border-[3px] border-black bg-paper text-ink brutal-press"
+            style={{ ["--bs" as string]: "var(--cyan)" }}
+          >
+            <Github className="h-4 w-4" />
+          </a>
+          <a
+            href={profile.links.linkedin}
+            target="_blank"
+            rel="noreferrer"
+            aria-label="LinkedIn"
+            className="grid h-9 w-9 place-items-center border-[3px] border-black bg-paper text-ink brutal-press"
+            style={{ ["--bs" as string]: "var(--acid)" }}
+          >
+            <Linkedin className="h-4 w-4" />
+          </a>
         </div>
 
-        {/* Mobile Navigation */}
-        {mobileMenuOpen && (
-          <div className="md:hidden py-4 border-t border-border">
-            <div className="flex flex-col gap-4">
-              {navLinks.map((link) => (
-                <Link
-                  key={link.name}
-                  href={link.href}
-                  className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
-                  onClick={() => setMobileMenuOpen(false)}
-                >
-                  {link.name}
-                </Link>
-              ))}
+        {/* mobile cluster */}
+        <div className="flex items-center gap-2 md:hidden">
+          <LangToggle className="h-10" />
+          <button
+            onClick={() => setOpen((v) => !v)}
+            className="grid h-10 w-10 place-items-center border-[3px] border-black bg-acid text-ink"
+            aria-label="Menu"
+          >
+            {open ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+          </button>
+        </div>
+      </div>
+
+      {/* mobile menu */}
+      {open && (
+        <div className="border-t-[3px] border-black bg-ink md:hidden">
+          <nav className="mx-auto flex max-w-6xl flex-col p-3">
+            {LINKS.map((l) => (
+              <button
+                key={l.id}
+                onClick={() => jump(l.id, l.label[lang])}
+                className="border-b-2 border-neutral-800 py-3 text-left font-mono text-sm font-bold tracking-wider hover:text-acid"
+              >
+                {l.label[lang]}
+              </button>
+            ))}
+            <div className="mt-3 flex gap-2">
+              <a href={profile.links.github} target="_blank" rel="noreferrer" aria-label="GitHub" className="grid h-10 w-10 place-items-center border-[3px] border-black bg-paper text-ink">
+                <Github className="h-4 w-4" />
+              </a>
+              <a href={profile.links.linkedin} target="_blank" rel="noreferrer" aria-label="LinkedIn" className="grid h-10 w-10 place-items-center border-[3px] border-black bg-paper text-ink">
+                <Linkedin className="h-4 w-4" />
+              </a>
             </div>
-          </div>
-        )}
-      </nav>
+          </nav>
+        </div>
+      )}
     </header>
   )
 }
