@@ -276,14 +276,11 @@
   75% { transform: rotate(-15deg); }
 }
 
-/* respect reduced motion */
+/* reduced motion: keep the site alive (marquee, blink, scramble, fades) but
+   drop jank-prone smooth scrolling. The 3D card softens its motion in JS
+   (see usePrefersReducedMotion) rather than freezing the whole page. */
 @media (prefers-reduced-motion: reduce) {
-  *,
-  *::before,
-  *::after {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
-    scroll-behavior: auto !important;
+  html {
+    scroll-behavior: auto;
   }
 }

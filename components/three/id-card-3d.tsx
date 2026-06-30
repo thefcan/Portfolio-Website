@@ -40,6 +40,19 @@ function useGlobalPointer() {
   return ref
 }
 
+// cheap WebGL feature test so machines without it fall back gracefully
+function hasWebGL() {
+  try {
+    const canvas = document.createElement("canvas")
+    return !!(
+      window.WebGLRenderingContext &&
+      (canvas.getContext("webgl") || canvas.getContext("experimental-webgl"))
+    )
+  } catch {
+    return false
+  }
+}
+
 /* ------------------------------------------------------------------ */
 /* card face — drawn to a 2D canvas, used as a texture                 */
 /* ------------------------------------------------------------------ */
@@ -248,7 +261,7 @@ const holoFragment = /* glsl */ `
 /* ------------------------------------------------------------------ */
 /* the 3D card mesh                                                    */
 /* ------------------------------------------------------------------ */
-function CardMesh({ mode }: { mode: "loading" | "hero" }) {
+function CardMesh({ mode, reduced }: { mode: "loading" | "hero"; reduced?: boolean }) {
   const group = useRef<THREE.Group>(null)
   const texture = useCardTexture()
   const pointer = useGlobalPointer()
@@ -263,16 +276,18 @@ function CardMesh({ mode }: { mode: "loading" | "hero" }) {
     const g = group.current
     if (!g) return
     const d = Math.min(dt, 0.05)
+    const k = reduced ? 0.3 : 1 // soften motion when the user prefers reduced motion
     if (mode === "loading") {
-      g.rotation.y += d * 1.1
-      g.rotation.x = Math.sin(t * 0.7) * 0.14
-      g.position.y = Math.sin(t * 1.3) * 0.06
+      g.rotation.y += d * (reduced ? 0.3 : 1.1)
+      g.rotation.x = Math.sin(t * 0.7) * 0.14 * k
+      g.position.y = Math.sin(t * 1.3) * 0.06 * k
     } else {
-      const ty = pointer.current.x * 0.6
-      const tx = -pointer.current.y * 0.4
+      const amp = reduced ? 0.4 : 1
+      const ty = pointer.current.x * 0.6 * amp
+      const tx = -pointer.current.y * 0.4 * amp
       g.rotation.y += (ty - g.rotation.y) * 0.07
       g.rotation.x += (tx - g.rotation.x) * 0.07
-      g.position.y = Math.sin(t * 1.0) * 0.07
+      g.position.y = Math.sin(t * 1.0) * 0.07 * k
     }
   })
 
@@ -366,8 +381,13 @@ export function IdCard3D({
 }) {
   const mounted = useMounted()
   const reduced = usePrefersReducedMotion()
+  const webglRef = useRef<boolean | undefined>(undefined)
+  if (webglRef.current === undefined && typeof window !== "undefined") {
+    webglRef.current = hasWebGL()
+  }
 
-  if (!mounted || reduced) {
+  // SSR / pre-mount, or no WebGL → graceful static card (page still animates via CSS)
+  if (!mounted || webglRef.current === false) {
     return <IdCardStatic className={className} />
   }
 
@@ -378,7 +398,7 @@ export function IdCard3D({
         gl={{ antialias: true, alpha: true, powerPreference: "high-performance" }}
         dpr={[1, 2]}
       >
-        <CardMesh mode={mode} />
+        <CardMesh mode={mode} reduced={reduced} />
       </Canvas>
     </div>
   )
