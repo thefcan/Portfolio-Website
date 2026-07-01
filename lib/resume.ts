@@ -27,7 +27,7 @@ export const experience: Experience[] = [
   {
     role: { en: "DevOps & Backend Developer Intern", tr: "DevOps & Backend Developer Stajyeri" },
     org: "Yazılım.xyz",
-    meta: { en: "Remote · Aug–Oct 2025", tr: "Remote · Ağu–Eki 2025" },
+    meta: { en: "Bursa · Aug–Oct 2025", tr: "Bursa · Ağu–Eki 2025" },
     desc: {
       en: "Built and maintained RESTful APIs and backend services within an agile team, working across the build-and-delivery workflow.",
       tr: "Agile bir takımda RESTful API'ler ve backend servisleri kurdum/sürdürdüm; build-and-delivery workflow'u boyunca çalıştım.",
