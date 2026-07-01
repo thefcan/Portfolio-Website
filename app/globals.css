@@ -160,11 +160,18 @@
   }
   html {
     scroll-behavior: smooth;
+    /* stop iOS Safari from inflating text in landscape */
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
   }
   body {
     @apply bg-background text-foreground;
     font-family: var(--font-sans);
     -webkit-font-smoothing: antialiased;
+    /* mobile polish: kill the grey tap flash (clashes with the neon theme)
+       and the rubber-band overscroll that reveals a bar behind the page */
+    -webkit-tap-highlight-color: transparent;
+    overscroll-behavior-y: none;
   }
   ::selection {
     background: var(--acid);

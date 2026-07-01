@@ -34,7 +34,7 @@ export function AboutSection() {
   const { t } = useLang()
 
   return (
-    <section id="about" ref={ref} className="relative border-b-[3px] border-black bg-ink-2 py-20 sm:py-24">
+    <section id="about" ref={ref} className="relative border-b-[3px] border-black bg-ink-2 py-14 sm:py-24">
       <div className="retro-dots pointer-events-none absolute inset-0 opacity-20" />
       <div className="relative mx-auto max-w-6xl px-4">
         {/* kicker */}

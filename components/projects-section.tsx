@@ -143,7 +143,7 @@ export function ProjectsSection() {
   )
 
   return (
-    <section id="projects" className="relative border-b-[3px] border-black bg-ink py-20 sm:py-24">
+    <section id="projects" className="relative border-b-[3px] border-black bg-ink py-14 sm:py-24">
       <div className="retro-grid pointer-events-none absolute inset-0 opacity-25" />
       <div className="relative mx-auto max-w-6xl px-4">
         <div className="mb-3 font-mono text-xs font-bold tracking-[0.3em] text-acid">{t(ui.projects_kicker)}</div>

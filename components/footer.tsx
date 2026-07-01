@@ -22,7 +22,7 @@ export function Footer() {
       <div className="scanlines pointer-events-none absolute inset-0 opacity-20" />
 
       {/* contact CTA */}
-      <div className="relative mx-auto max-w-6xl px-4 py-20 sm:py-24">
+      <div className="relative mx-auto max-w-6xl px-4 py-14 sm:py-24">
         <div className="mb-3 font-mono text-xs font-bold tracking-[0.3em] text-acid">{t(ui.contact_kicker)}</div>
         <h2 className="font-black uppercase leading-[0.95] tracking-tight text-4xl sm:text-6xl">
           <ScrambleText text={t(ui.contact_heading1)} duration={700} />

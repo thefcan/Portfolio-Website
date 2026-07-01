@@ -40,7 +40,7 @@ export function HeroSection() {
       <div className="pointer-events-none absolute -right-24 -top-24 h-72 w-72 rounded-full bg-hot/20 blur-3xl" />
       <div className="pointer-events-none absolute -bottom-24 left-1/3 h-72 w-72 rounded-full bg-cyan/10 blur-3xl" />
 
-      <div className="relative mx-auto grid max-w-6xl items-center gap-10 px-4 py-16 sm:py-20 lg:grid-cols-[1.1fr_0.9fr] lg:py-24">
+      <div className="relative mx-auto grid max-w-6xl items-center gap-10 px-4 py-12 sm:py-20 lg:grid-cols-[1.1fr_0.9fr] lg:py-24">
         {/* ---- left: copy ---- */}
         <div>
           <div

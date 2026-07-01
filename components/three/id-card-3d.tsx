@@ -26,6 +26,19 @@ function usePrefersReducedMotion() {
   return reduced
 }
 
+// touch / small-screen devices → lighter WebGL (lower DPR, no forced hi-power GPU)
+function useIsMobile() {
+  const [mobile, setMobile] = useState(false)
+  useEffect(() => {
+    const mq = window.matchMedia("(max-width: 767px), (pointer: coarse)")
+    const on = () => setMobile(mq.matches)
+    on()
+    mq.addEventListener?.("change", on)
+    return () => mq.removeEventListener?.("change", on)
+  }, [])
+  return mobile
+}
+
 // normalized [-1,1] window pointer, shared, updated lazily
 function useGlobalPointer() {
   const ref = useRef({ x: 0, y: 0 })
@@ -520,10 +533,26 @@ export function IdCard3D({
 }) {
   const mounted = useMounted()
   const reduced = usePrefersReducedMotion()
+  const mobile = useIsMobile()
+  const wrapRef = useRef<HTMLDivElement>(null)
+  const [inView, setInView] = useState(true)
   const webglRef = useRef<boolean | undefined>(undefined)
   if (webglRef.current === undefined && typeof window !== "undefined") {
     webglRef.current = hasWebGL()
   }
+
+  // pause the render loop while the hero card is scrolled out of view — saves
+  // battery/heat on mobile (the boot card is full-screen, so it never pauses)
+  useEffect(() => {
+    if (mode !== "hero") return
+    const el = wrapRef.current
+    if (!el) return
+    const ob = new IntersectionObserver(([e]) => setInView(e.isIntersecting), {
+      rootMargin: "120px",
+    })
+    ob.observe(el)
+    return () => ob.disconnect()
+  }, [mode, mounted])
 
   // SSR / pre-mount, or no WebGL → graceful static card (page still animates via CSS)
   if (!mounted || webglRef.current === false) {
@@ -531,11 +560,16 @@ export function IdCard3D({
   }
 
   return (
-    <div className={className}>
+    <div ref={wrapRef} className={className}>
       <Canvas
         camera={{ position: [0, 0, 6.2], fov: 32 }}
-        gl={{ antialias: true, alpha: true, powerPreference: "high-performance" }}
-        dpr={[1, 2]}
+        gl={{
+          antialias: true,
+          alpha: true,
+          powerPreference: mobile ? "default" : "high-performance",
+        }}
+        dpr={mobile ? [1, 1.5] : [1, 2]}
+        frameloop={inView ? "always" : "demand"}
       >
         <CardMesh mode={mode} reduced={reduced} />
       </Canvas>
