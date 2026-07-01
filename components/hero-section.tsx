@@ -1,6 +1,7 @@
 "use client"
 
 import dynamic from "next/dynamic"
+import { useEffect, useState } from "react"
 import { ArrowRight, Github, Mail } from "lucide-react"
 import { useNav } from "@/components/transition/transition-provider"
 import { useLang } from "@/components/i18n/lang-provider"
@@ -32,6 +33,14 @@ const TICKER = [
 export function HeroSection() {
   const { goTo } = useNav()
   const { lang, t } = useLang()
+
+  // mobile has no hover cursor, so the tap-to-flip affordance isn't obvious —
+  // show a small hint until the card is first tapped (or a few seconds pass)
+  const [flipHintSeen, setFlipHintSeen] = useState(false)
+  useEffect(() => {
+    const id = setTimeout(() => setFlipHintSeen(true), 9000)
+    return () => clearTimeout(id)
+  }, [])
 
   return (
     <section id="top" className="relative overflow-hidden border-b-[3px] border-black">
@@ -99,9 +108,21 @@ export function HeroSection() {
 
         {/* ---- right: 3D card ---- */}
         <div className="relative">
-          <div className="relative mx-auto h-[420px] w-full max-w-[360px] sm:h-[460px]">
+          <div
+            className="relative mx-auto h-[420px] w-full max-w-[360px] sm:h-[460px]"
+            onPointerDown={() => setFlipHintSeen(true)}
+          >
             <IdCard3D mode="hero" className="h-full w-full" />
           </div>
+          {/* touch-only affordance — desktop already gets a pointer cursor */}
+          {!flipHintSeen && (
+            <div className="mt-2 flex justify-center sm:hidden">
+              <span className="inline-flex items-center gap-2 border-[3px] border-black bg-acid px-3 py-1.5 font-mono text-xs font-bold text-ink shadow-[3px_3px_0_#000]">
+                <span className="animate-bounce">👆</span>
+                {t({ en: "tap the card to flip", tr: "kartı çevirmek için dokun" })}
+              </span>
+            </div>
+          )}
         </div>
       </div>
 

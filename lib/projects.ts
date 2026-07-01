@@ -63,7 +63,7 @@ export const projects: Project[] = [
   },
   {
     id: "unity-match3",
-    no: "14",
+    no: "02",
     title: "unity-match3",
     badge: { en: "GAME · C#", tr: "OYUN · C#" },
     subtitle: {
@@ -92,7 +92,7 @@ export const projects: Project[] = [
   },
   {
     id: "ragdesk",
-    no: "02",
+    no: "03",
     title: "RagDesk",
     badge: { en: "SAAS · RAG", tr: "SAAS · RAG" },
     subtitle: {
@@ -121,7 +121,7 @@ export const projects: Project[] = [
   },
   {
     id: "reveil",
-    no: "03",
+    no: "04",
     title: "Reveil",
     badge: { en: "CAPSTONE · AI", tr: "BİTİRME · AI" },
     subtitle: {
@@ -149,7 +149,7 @@ export const projects: Project[] = [
   },
   {
     id: "costsight",
-    no: "04",
+    no: "05",
     title: "CostSight",
     badge: { en: "CLOUD · ML", tr: "CLOUD · ML" },
     subtitle: {
@@ -177,7 +177,7 @@ export const projects: Project[] = [
   },
   {
     id: "gocontainer",
-    no: "05",
+    no: "06",
     title: "gocontainer",
     badge: { en: "GO · LINUX", tr: "GO · LINUX" },
     subtitle: {
@@ -205,7 +205,7 @@ export const projects: Project[] = [
   },
   {
     id: "gochain",
-    no: "06",
+    no: "07",
     title: "gochain",
     badge: { en: "GO · DISTRIBUTED", tr: "GO · DISTRIBUTED" },
     subtitle: {
@@ -233,7 +233,7 @@ export const projects: Project[] = [
   },
   {
     id: "rust-url-shortener",
-    no: "07",
+    no: "08",
     title: "rust-url-shortener",
     badge: { en: "RUST · ASYNC", tr: "RUST · ASYNC" },
     subtitle: {
@@ -261,7 +261,7 @@ export const projects: Project[] = [
   },
   {
     id: "go-rest-task-api",
-    no: "08",
+    no: "09",
     title: "go-rest-task-api",
     badge: { en: "GO · BACKEND", tr: "GO · BACKEND" },
     subtitle: {
@@ -289,7 +289,7 @@ export const projects: Project[] = [
   },
   {
     id: "rtos-process-control",
-    no: "09",
+    no: "10",
     title: "Process Control · RTOS",
     badge: { en: "C · EMBEDDED", tr: "C · EMBEDDED" },
     subtitle: {
@@ -317,7 +317,7 @@ export const projects: Project[] = [
   },
   {
     id: "mips16-pipeline",
-    no: "10",
+    no: "11",
     title: "MIPS16 Pipeline",
     badge: { en: "C · ARCH", tr: "C · ARCH" },
     subtitle: {
@@ -345,7 +345,7 @@ export const projects: Project[] = [
   },
   {
     id: "dolap-sale-prediction",
-    no: "11",
+    no: "12",
     title: "Dolap Sale Prediction",
     badge: { en: "PYTHON · ML", tr: "PYTHON · ML" },
     subtitle: {
@@ -373,7 +373,7 @@ export const projects: Project[] = [
   },
   {
     id: "cnn-mnist",
-    no: "12",
+    no: "13",
     title: "CNN · MNIST",
     badge: { en: "PYTHON · DL", tr: "PYTHON · DL" },
     subtitle: {

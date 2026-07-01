@@ -28,11 +28,11 @@ export const profile = {
   // short hybrid bio (about section) — tech concepts kept in English even in TR
   bio: {
     en: [
-      "I'm a software engineer who ships production systems — from match-3 game mechanics to Kubernetes chaos tests.",
+      "I'm a computer engineer who ships production systems — from match-3 game mechanics to Kubernetes chaos tests.",
       "On one side, games with Unity/C#; on the other, scalable backend & DevOps with Go, NestJS and Docker/K8s. I feed both with real projects.",
     ],
     tr: [
-      "Match-3 oyun mekaniklerinden Kubernetes chaos testlerine kadar uzanan, production'a çıkmış sistemler kuran bir yazılım mühendisiyim.",
+      "Match-3 oyun mekaniklerinden Kubernetes chaos testlerine kadar uzanan, production'a çıkmış sistemler kuran bir bilgisayar mühendisiyim.",
       "Bir yanda Unity/C# ile oyun; diğer yanda Go, NestJS ve Docker/K8s ile ölçeklenebilir backend & DevOps. İkisini de gerçek projelerle besliyorum.",
     ],
   } as LList,
