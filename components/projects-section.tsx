@@ -174,7 +174,9 @@ export function ProjectsSection() {
         </div>
 
         {/* grid */}
-        <motion.div layout className="mt-8 grid auto-rows-fr grid-cols-1 gap-5 [grid-auto-flow:dense] sm:grid-cols-2">
+        {/* single column sizes to content on mobile; equal-height rows only
+            kick in at sm+, where the 2-col layout needs aligned cards */}
+        <motion.div layout className="mt-8 grid grid-cols-1 gap-5 sm:auto-rows-fr sm:grid-cols-2 sm:[grid-auto-flow:dense]">
           <AnimatePresence mode="popLayout">
             {shown.map((p) => (
               <ProjectCard key={p.id} p={p} />
