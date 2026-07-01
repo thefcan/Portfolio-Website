@@ -26,27 +26,29 @@ const ACCENT_VAR: Record<Project["accent"], string> = {
   amber: "var(--amber)",
 }
 
-function ProjectCard({ p }: { p: Project }) {
+// `compact` renders the uniform catalog card (no FEATURED badge, no highlights);
+// the rich variant — badge + highlight bullets — is reserved for the flagship
+// showcase so the same project doesn't get the full treatment twice.
+function ProjectCard({ p, compact = false, index = 0 }: { p: Project; compact?: boolean; index?: number }) {
   const { t } = useLang()
   const accent = ACCENT_VAR[p.accent]
+  const rich = !compact && p.featured
   return (
     <motion.article
-      layout
+      layout={compact}
       initial={{ opacity: 0, y: 24, scale: 0.98 }}
       whileInView={{ opacity: 1, y: 0, scale: 1 }}
       viewport={{ once: true, amount: 0.15 }}
       exit={{ opacity: 0, scale: 0.96 }}
-      transition={{ duration: 0.3 }}
-      className={`group flex flex-col border-[3px] border-black bg-ink-2 brutal-sm ${
-        p.featured ? "sm:col-span-2" : ""
-      }`}
+      transition={{ duration: 0.3, delay: compact ? 0 : index * 0.08 }}
+      className="group flex flex-col border-[3px] border-black bg-ink-2 brutal-sm"
       style={{ ["--bs" as string]: accent }}
     >
       {/* top strip */}
       <div className="flex items-center gap-3 border-b-[3px] border-black px-4 py-2" style={{ background: accent }}>
         <span className="font-mono text-sm font-black text-ink">{p.no}</span>
         <span className="font-mono text-xs font-bold text-ink/80">{t(p.badge)}</span>
-        {p.featured && (
+        {rich && (
           <span className="ml-auto inline-flex items-center gap-1 bg-ink px-2 py-0.5 font-mono text-[10px] font-bold text-paper">
             <Star className="h-3 w-3 fill-current" />
             {t(ui.proj_featured)}
@@ -59,7 +61,7 @@ function ProjectCard({ p }: { p: Project }) {
         <p className="mt-1 font-mono text-[11px] font-bold leading-snug text-muted-foreground">{t(p.subtitle)}</p>
         <p className="mt-3 text-sm leading-relaxed text-muted-foreground">{t(p.blurb)}</p>
 
-        {p.featured && (
+        {rich && (
           <ul className="mt-4 space-y-2">
             {t(p.highlights).map((h, i) => (
               <li key={i} className="flex gap-2 text-sm text-paper/90">
@@ -81,8 +83,9 @@ function ProjectCard({ p }: { p: Project }) {
           ))}
         </div>
 
-        {/* links */}
-        <div className="mt-5 flex flex-wrap gap-2 pt-1">
+        {/* links pinned to the bottom (mt-auto) so CTAs line up across a row
+            and extra height reads as breathing room, not a gap under a button */}
+        <div className="mt-auto flex flex-wrap gap-2 pt-5">
           {p.links.repo && (
             <a
               href={p.links.repo}
@@ -122,7 +125,10 @@ function ProjectCard({ p }: { p: Project }) {
 export function ProjectsSection() {
   const { t } = useLang()
   const { ref, seen } = useInView<HTMLElement>()
+  const { ref: catRef, seen: catSeen } = useInView<HTMLDivElement>()
   const [filter, setFilter] = useState<Filter>("all")
+
+  const featured = useMemo(() => projects.filter((p) => p.featured), [])
 
   const FILTERS: { key: Filter; label: { en: string; tr: string } }[] = [
     { key: "all", label: ui.filter_all },
@@ -132,6 +138,9 @@ export function ProjectsSection() {
     { key: "ml", label: CATEGORY_LABELS.ml },
   ]
 
+  // counts + catalog stay over the full set so every filter (incl. GAMES, whose
+  // only project is featured) still resolves — the flagship is a highlight reel,
+  // not a removal from the catalog.
   const counts = useMemo(() => {
     const c: Record<string, number> = { all: projects.length }
     for (const cat of ["games", "backend", "systems", "ml"] as ProjectCategory[]) {
@@ -149,71 +158,86 @@ export function ProjectsSection() {
     <section id="projects" ref={ref} className="relative border-b-[3px] border-black bg-ink py-14 sm:py-24">
       <div className="retro-grid pointer-events-none absolute inset-0 opacity-25" />
       <div className="relative mx-auto max-w-6xl px-4">
-        <div className="mb-3 font-mono text-xs font-bold tracking-[0.3em] text-acid">{t(ui.projects_kicker)}</div>
+        {/* ---- flagship showcase ---- */}
+        <div className="mb-3 font-mono text-xs font-bold tracking-[0.3em] text-acid">{t(ui.flagship_kicker)}</div>
         <h2 className="font-black uppercase leading-none tracking-tight text-4xl sm:text-5xl">
-          <ScrambleText text={t(ui.projects_heading)} start={seen} duration={850} />
+          <ScrambleText text={t(ui.flagship_heading)} start={seen} duration={850} />
         </h2>
-
-        {/* filters */}
-        <div className="mt-7 flex flex-wrap gap-2">
-          {FILTERS.map((f) => {
-            const active = filter === f.key
-            return (
-              <button
-                key={f.key}
-                onClick={() => setFilter(f.key)}
-                className={`inline-flex items-center gap-2 border-[3px] border-black px-3 py-1.5 font-mono text-xs font-bold transition-colors ${
-                  active ? "bg-acid text-ink" : "bg-ink-2 text-paper hover:bg-ink-2/60"
-                }`}
-                style={active ? { ["--bs" as string]: "#000" } : undefined}
-              >
-                {t(f.label)}
-                <span className={`text-[10px] ${active ? "text-ink/60" : "text-muted-foreground"}`}>
-                  {counts[f.key]}
-                </span>
-              </button>
-            )
-          })}
+        {/* items-start so each flagship card is its own content height (the three
+            differ a lot in length) — top-aligned, no stretched-in empty space */}
+        <div className="mt-8 grid items-start gap-5 lg:grid-cols-3">
+          {featured.map((p, i) => (
+            <ProjectCard key={p.id} p={p} index={i} />
+          ))}
         </div>
 
-        {/* grid */}
-        {/* single column sizes to content on mobile; equal-height rows only
-            kick in at sm+, where the 2-col layout needs aligned cards */}
-        <motion.div layout className="mt-8 grid grid-cols-1 gap-5 sm:auto-rows-fr sm:grid-cols-2 sm:[grid-auto-flow:dense]">
-          <AnimatePresence mode="popLayout">
-            {shown.map((p) => (
-              <ProjectCard key={p.id} p={p} />
-            ))}
-          </AnimatePresence>
-        </motion.div>
+        {/* ---- full catalog ---- */}
+        <div ref={catRef} className="mt-16">
+          <div className="mb-3 font-mono text-xs font-bold tracking-[0.3em] text-acid">{t(ui.projects_kicker)}</div>
+          <h2 className="font-black uppercase leading-none tracking-tight text-4xl sm:text-5xl">
+            <ScrambleText text={t(ui.projects_heading)} start={catSeen} duration={850} />
+          </h2>
 
-        {/* more on github */}
-        <div
-          className={`mt-8 border-[3px] border-dashed border-neutral-700 bg-ink-2/50 p-5 transition-all duration-700 ${
-            seen ? "translate-y-0 opacity-100" : "translate-y-6 opacity-0"
-          }`}
-        >
-          <div className="font-mono text-xs font-bold tracking-widest text-muted-foreground">
-            <span className="text-acid">{"//"}</span> {t(ui.proj_more)}
+          {/* filters */}
+          <div className="mt-7 flex flex-wrap gap-2">
+            {FILTERS.map((f) => {
+              const active = filter === f.key
+              return (
+                <button
+                  key={f.key}
+                  onClick={() => setFilter(f.key)}
+                  className={`inline-flex items-center gap-2 border-[3px] border-black px-3 py-1.5 font-mono text-xs font-bold transition-colors ${
+                    active ? "bg-acid text-ink" : "bg-ink-2 text-paper hover:bg-ink-2/60"
+                  }`}
+                  style={active ? { ["--bs" as string]: "#000" } : undefined}
+                >
+                  {t(f.label)}
+                  <span className={`text-[10px] ${active ? "text-ink/60" : "text-muted-foreground"}`}>
+                    {counts[f.key]}
+                  </span>
+                </button>
+              )
+            })}
           </div>
-          <div className="mt-2 flex flex-wrap items-center gap-x-2 gap-y-1 font-mono text-sm text-paper">
-            {MORE_PROJECTS.map((m, i) => (
-              <span key={m}>
-                {m}
-                {i < MORE_PROJECTS.length - 1 && <span className="ml-2 text-neutral-600">·</span>}
-              </span>
-            ))}
-          </div>
-          <a
-            href={profile.links.github}
-            target="_blank"
-            rel="noreferrer"
-            className="mt-4 inline-flex items-center gap-2 border-[3px] border-black bg-paper px-3 py-1.5 font-mono text-xs font-bold text-ink brutal-press"
-            style={{ ["--bs" as string]: "var(--hot)" }}
+
+          {/* grid — single column sizes to content on mobile; equal-height rows
+              only kick in at sm+, where the 2-col layout needs aligned cards */}
+          <motion.div layout className="mt-8 grid grid-cols-1 gap-5 sm:auto-rows-fr sm:grid-cols-2 sm:[grid-auto-flow:dense]">
+            <AnimatePresence mode="popLayout">
+              {shown.map((p) => (
+                <ProjectCard key={p.id} p={p} compact />
+              ))}
+            </AnimatePresence>
+          </motion.div>
+
+          {/* more on github */}
+          <div
+            className={`mt-8 border-[3px] border-dashed border-neutral-700 bg-ink-2/50 p-5 transition-all duration-700 ${
+              catSeen ? "translate-y-0 opacity-100" : "translate-y-6 opacity-0"
+            }`}
           >
-            <Github className="h-3.5 w-3.5" />
-            github.com/thefcan
-          </a>
+            <div className="font-mono text-xs font-bold tracking-widest text-muted-foreground">
+              <span className="text-acid">{"//"}</span> {t(ui.proj_more)}
+            </div>
+            <div className="mt-2 flex flex-wrap items-center gap-x-2 gap-y-1 font-mono text-sm text-paper">
+              {MORE_PROJECTS.map((m, i) => (
+                <span key={m}>
+                  {m}
+                  {i < MORE_PROJECTS.length - 1 && <span className="ml-2 text-neutral-600">·</span>}
+                </span>
+              ))}
+            </div>
+            <a
+              href={profile.links.github}
+              target="_blank"
+              rel="noreferrer"
+              className="mt-4 inline-flex items-center gap-2 border-[3px] border-black bg-paper px-3 py-1.5 font-mono text-xs font-bold text-ink brutal-press"
+              style={{ ["--bs" as string]: "var(--hot)" }}
+            >
+              <Github className="h-3.5 w-3.5" />
+              github.com/thefcan
+            </a>
+          </div>
         </div>
       </div>
     </section>

@@ -55,8 +55,10 @@ export const ui = {
   skills_learning: { en: "LEARNING", tr: "ÖĞRENİYORUM" },
 
   // projects
+  flagship_kicker: { en: "// FLAGSHIP", tr: "// VİTRİN" },
+  flagship_heading: { en: "FEATURED WORK", tr: "ÖNE ÇIKAN İŞLER" },
   projects_kicker: { en: "// PROJECTS", tr: "// PROJELER" },
-  projects_heading: { en: "SELECTED WORK", tr: "SEÇİLİ İŞLER" },
+  projects_heading: { en: "ALL PROJECTS", tr: "TÜM PROJELER" },
   filter_all: { en: "ALL", tr: "TÜMÜ" },
   proj_featured: { en: "FEATURED", tr: "ÖNE ÇIKAN" },
   proj_code: { en: "CODE", tr: "KOD" },
