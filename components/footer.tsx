@@ -39,12 +39,12 @@ export function Footer() {
         <div className="mt-8 flex flex-wrap items-center gap-3">
           <a
             href={profile.links.email}
-            className="group inline-flex items-center gap-2 border-[3px] border-black bg-acid px-5 py-3 font-mono text-sm font-bold text-ink brutal-press"
+            className="group inline-flex min-w-0 max-w-full items-center gap-2 border-[3px] border-black bg-acid px-4 py-3 font-mono text-sm font-bold text-ink brutal-press sm:px-5"
             style={{ ["--bs" as string]: "#000" }}
           >
-            <Mail className="h-4 w-4" />
-            {profile.email}
-            <ArrowUpRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+            <Mail className="h-4 w-4 shrink-0" />
+            <span className="min-w-0 break-all">{profile.email}</span>
+            <ArrowUpRight className="h-4 w-4 shrink-0 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
           </a>
           {SOCIALS.map((s) => (
             <a
