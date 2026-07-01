@@ -1,33 +1,12 @@
 "use client"
 
-import { useEffect, useRef, useState } from "react"
 import { Briefcase, GraduationCap, Gamepad2, Server } from "lucide-react"
 import { ScrambleText } from "@/components/scramble-text"
+import { useInView } from "@/components/use-in-view"
 import { useLang } from "@/components/i18n/lang-provider"
 import { ui } from "@/lib/i18n"
 import { profile } from "@/lib/profile"
 import { experience, education, stats } from "@/lib/resume"
-
-function useInView<T extends HTMLElement>(threshold = 0.15) {
-  const ref = useRef<T>(null)
-  const [seen, setSeen] = useState(false)
-  useEffect(() => {
-    const el = ref.current
-    if (!el) return
-    const ob = new IntersectionObserver(
-      ([e]) => {
-        if (e.isIntersecting) {
-          setSeen(true)
-          ob.disconnect()
-        }
-      },
-      { threshold },
-    )
-    ob.observe(el)
-    return () => ob.disconnect()
-  }, [threshold])
-  return { ref, seen }
-}
 
 export function AboutSection() {
   const { ref, seen } = useInView<HTMLElement>()

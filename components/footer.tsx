@@ -2,6 +2,7 @@
 
 import { Github, Linkedin, Mail, ArrowUpRight, Globe } from "lucide-react"
 import { useNav } from "@/components/transition/transition-provider"
+import { useInView } from "@/components/use-in-view"
 import { useLang } from "@/components/i18n/lang-provider"
 import { ScrambleText } from "@/components/scramble-text"
 import { ui } from "@/lib/i18n"
@@ -16,19 +17,20 @@ const SOCIALS = [
 export function Footer() {
   const { goTo } = useNav()
   const { t } = useLang()
+  const { ref, seen } = useInView<HTMLElement>()
 
   return (
-    <footer id="contact" className="relative overflow-hidden bg-ink-2">
+    <footer id="contact" ref={ref} className="relative overflow-hidden bg-ink-2">
       <div className="scanlines pointer-events-none absolute inset-0 opacity-20" />
 
       {/* contact CTA */}
       <div className="relative mx-auto max-w-6xl px-4 py-14 sm:py-24">
         <div className="mb-3 font-mono text-xs font-bold tracking-[0.3em] text-acid">{t(ui.contact_kicker)}</div>
         <h2 className="font-black uppercase leading-[0.95] tracking-tight text-4xl sm:text-6xl">
-          <ScrambleText text={t(ui.contact_heading1)} duration={700} />
+          <ScrambleText text={t(ui.contact_heading1)} start={seen} duration={700} />
           <br />
           <span className="text-acid">
-            <ScrambleText text={t(ui.contact_heading2)} duration={900} />
+            <ScrambleText text={t(ui.contact_heading2)} start={seen} duration={900} />
           </span>
         </h2>
 
@@ -36,7 +38,11 @@ export function Footer() {
           {t(ui.contact_body)}
         </p>
 
-        <div className="mt-8 flex flex-wrap items-center gap-3">
+        <div
+          className={`mt-8 flex flex-wrap items-center gap-3 transition-all delay-150 duration-700 ${
+            seen ? "translate-y-0 opacity-100" : "translate-y-6 opacity-0"
+          }`}
+        >
           <a
             href={profile.links.email}
             className="group inline-flex min-w-0 max-w-full items-center gap-2 border-[3px] border-black bg-acid px-4 py-3 font-mono text-sm font-bold text-ink brutal-press sm:px-5"

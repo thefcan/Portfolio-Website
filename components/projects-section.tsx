@@ -4,6 +4,7 @@ import { useMemo, useState } from "react"
 import { AnimatePresence, motion } from "framer-motion"
 import { Github, ExternalLink, Lock, Star } from "lucide-react"
 import { ScrambleText } from "@/components/scramble-text"
+import { useInView } from "@/components/use-in-view"
 import { useLang } from "@/components/i18n/lang-provider"
 import { ui } from "@/lib/i18n"
 import {
@@ -31,10 +32,11 @@ function ProjectCard({ p }: { p: Project }) {
   return (
     <motion.article
       layout
-      initial={{ opacity: 0, scale: 0.96 }}
-      animate={{ opacity: 1, scale: 1 }}
+      initial={{ opacity: 0, y: 24, scale: 0.98 }}
+      whileInView={{ opacity: 1, y: 0, scale: 1 }}
+      viewport={{ once: true, amount: 0.15 }}
       exit={{ opacity: 0, scale: 0.96 }}
-      transition={{ duration: 0.25 }}
+      transition={{ duration: 0.3 }}
       className={`group flex flex-col border-[3px] border-black bg-ink-2 brutal-sm ${
         p.featured ? "sm:col-span-2" : ""
       }`}
@@ -119,6 +121,7 @@ function ProjectCard({ p }: { p: Project }) {
 
 export function ProjectsSection() {
   const { t } = useLang()
+  const { ref, seen } = useInView<HTMLElement>()
   const [filter, setFilter] = useState<Filter>("all")
 
   const FILTERS: { key: Filter; label: { en: string; tr: string } }[] = [
@@ -143,12 +146,12 @@ export function ProjectsSection() {
   )
 
   return (
-    <section id="projects" className="relative border-b-[3px] border-black bg-ink py-14 sm:py-24">
+    <section id="projects" ref={ref} className="relative border-b-[3px] border-black bg-ink py-14 sm:py-24">
       <div className="retro-grid pointer-events-none absolute inset-0 opacity-25" />
       <div className="relative mx-auto max-w-6xl px-4">
         <div className="mb-3 font-mono text-xs font-bold tracking-[0.3em] text-acid">{t(ui.projects_kicker)}</div>
         <h2 className="font-black uppercase leading-none tracking-tight text-4xl sm:text-5xl">
-          <ScrambleText text={t(ui.projects_heading)} duration={850} />
+          <ScrambleText text={t(ui.projects_heading)} start={seen} duration={850} />
         </h2>
 
         {/* filters */}
@@ -185,7 +188,11 @@ export function ProjectsSection() {
         </motion.div>
 
         {/* more on github */}
-        <div className="mt-8 border-[3px] border-dashed border-neutral-700 bg-ink-2/50 p-5">
+        <div
+          className={`mt-8 border-[3px] border-dashed border-neutral-700 bg-ink-2/50 p-5 transition-all duration-700 ${
+            seen ? "translate-y-0 opacity-100" : "translate-y-6 opacity-0"
+          }`}
+        >
           <div className="font-mono text-xs font-bold tracking-widest text-muted-foreground">
             <span className="text-acid">{"//"}</span> {t(ui.proj_more)}
           </div>

@@ -1,31 +1,10 @@
 "use client"
 
-import { useEffect, useRef, useState } from "react"
 import { ScrambleText } from "@/components/scramble-text"
+import { useInView } from "@/components/use-in-view"
 import { useLang } from "@/components/i18n/lang-provider"
 import { ui } from "@/lib/i18n"
 import { skills } from "@/lib/resume"
-
-function useInView<T extends HTMLElement>(threshold = 0.2) {
-  const ref = useRef<T>(null)
-  const [seen, setSeen] = useState(false)
-  useEffect(() => {
-    const el = ref.current
-    if (!el) return
-    const ob = new IntersectionObserver(
-      ([e]) => {
-        if (e.isIntersecting) {
-          setSeen(true)
-          ob.disconnect()
-        }
-      },
-      { threshold },
-    )
-    ob.observe(el)
-    return () => ob.disconnect()
-  }, [threshold])
-  return { ref, seen }
-}
 
 const GROUP_ACCENT = ["var(--acid)", "var(--hot)", "var(--cyan)", "var(--violet)", "var(--amber)"]
 
