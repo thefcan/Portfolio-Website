@@ -4,6 +4,7 @@ import { useEffect, useMemo, useRef, useState } from "react"
 import { Canvas, useFrame } from "@react-three/fiber"
 import * as THREE from "three"
 import { profile } from "@/lib/profile"
+import { usePrefersReducedMotion } from "@/components/use-prefers-reduced-motion"
 
 /* ------------------------------------------------------------------ */
 /* small client hooks                                                  */
@@ -12,18 +13,6 @@ function useMounted() {
   const [m, setM] = useState(false)
   useEffect(() => setM(true), [])
   return m
-}
-
-function usePrefersReducedMotion() {
-  const [reduced, setReduced] = useState(false)
-  useEffect(() => {
-    const mq = window.matchMedia("(prefers-reduced-motion: reduce)")
-    const on = () => setReduced(mq.matches)
-    on()
-    mq.addEventListener?.("change", on)
-    return () => mq.removeEventListener?.("change", on)
-  }, [])
-  return reduced
 }
 
 // touch / small-screen devices → lighter WebGL (lower DPR, no forced hi-power GPU)

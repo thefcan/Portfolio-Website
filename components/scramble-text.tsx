@@ -23,7 +23,12 @@ export function ScrambleText({
   const rafRef = useRef<number | undefined>(undefined)
 
   useEffect(() => {
-    if (!start) {
+    // read the flag at effect-time (not via a hook) so the very first mount is
+    // correct — no scramble flash before a reactive value catches up
+    const reduced =
+      typeof window !== "undefined" &&
+      window.matchMedia?.("(prefers-reduced-motion: reduce)").matches
+    if (!start || reduced) {
       setOut(text)
       return
     }

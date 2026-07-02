@@ -3,6 +3,7 @@
 import { Briefcase, GraduationCap, Gamepad2, Server } from "lucide-react"
 import { ScrambleText } from "@/components/scramble-text"
 import { useInView } from "@/components/use-in-view"
+import { usePrefersReducedMotion, revealClass } from "@/components/use-prefers-reduced-motion"
 import { useLang } from "@/components/i18n/lang-provider"
 import { ui } from "@/lib/i18n"
 import { profile } from "@/lib/profile"
@@ -10,6 +11,7 @@ import { experience, education, stats } from "@/lib/resume"
 
 export function AboutSection() {
   const { ref, seen } = useInView<HTMLElement>()
+  const reduced = usePrefersReducedMotion()
   const { t } = useLang()
 
   return (
@@ -56,11 +58,7 @@ export function AboutSection() {
           </div>
 
           {/* stats */}
-          <div
-            className={`grid grid-cols-2 gap-4 transition-all duration-700 ${
-              seen ? "translate-y-0 opacity-100" : "translate-y-6 opacity-0"
-            }`}
-          >
+          <div className={`grid grid-cols-2 gap-4 transition-all duration-700 ${revealClass(seen, reduced)}`}>
             {stats.map((s, i) => {
               const accents = ["var(--acid)", "var(--hot)", "var(--cyan)", "var(--amber)"]
               return (

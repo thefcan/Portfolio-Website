@@ -283,11 +283,23 @@
   75% { transform: rotate(-15deg); }
 }
 
-/* reduced motion: keep the site alive (marquee, blink, scramble, fades) but
-   drop jank-prone smooth scrolling. The 3D card softens its motion in JS
-   (see usePrefersReducedMotion) rather than freezing the whole page. */
+/* reduced motion (macOS: Settings › Accessibility › Display › Reduce Motion).
+   Policy: stop everything that *travels* — smooth scroll, the ambient ticker /
+   spin / bounce / float / scan loops — while keeping calm opacity cues (the
+   blink cursor, section fades). Scramble headings resolve instantly and the
+   scroll-reveals + framer cards drop their slide in JS (usePrefersReducedMotion,
+   revealClass); the 3D card softens its own motion. */
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
+  }
+  .animate-marquee,
+  .animate-float,
+  .animate-scan,
+  .animate-spin-slow,
+  .animate-spin-y,
+  .animate-bounce,
+  [class*="animate-[marquee"] {
+    animation: none !important;
   }
 }

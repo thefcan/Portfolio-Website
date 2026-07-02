@@ -5,6 +5,7 @@ import { AnimatePresence, motion } from "framer-motion"
 import { Github, ExternalLink, Lock, Star } from "lucide-react"
 import { ScrambleText } from "@/components/scramble-text"
 import { useInView } from "@/components/use-in-view"
+import { usePrefersReducedMotion, revealClass } from "@/components/use-prefers-reduced-motion"
 import { useLang } from "@/components/i18n/lang-provider"
 import { ui } from "@/lib/i18n"
 import {
@@ -31,16 +32,20 @@ const ACCENT_VAR: Record<Project["accent"], string> = {
 // showcase so the same project doesn't get the full treatment twice.
 function ProjectCard({ p, compact = false, index = 0 }: { p: Project; compact?: boolean; index?: number }) {
   const { t } = useLang()
+  const reduced = usePrefersReducedMotion()
   const accent = ACCENT_VAR[p.accent]
   const rich = !compact && p.featured
   return (
     <motion.article
-      layout={compact}
+      // reduced motion: keep the same start/end state (no hydration drift) but
+      // collapse the duration so the card appears instantly — an instant opacity
+      // step reads as calm, not as a slide/scale
+      layout={compact && !reduced}
       initial={{ opacity: 0, y: 24, scale: 0.98 }}
       whileInView={{ opacity: 1, y: 0, scale: 1 }}
       viewport={{ once: true, amount: 0.15 }}
       exit={{ opacity: 0, scale: 0.96 }}
-      transition={{ duration: 0.3, delay: compact ? 0 : index * 0.08 }}
+      transition={{ duration: reduced ? 0 : 0.3, delay: reduced || compact ? 0 : index * 0.08 }}
       className="group flex flex-col border-[3px] border-black bg-ink-2 brutal-sm"
       style={{ ["--bs" as string]: accent }}
     >
@@ -126,6 +131,7 @@ export function ProjectsSection() {
   const { t } = useLang()
   const { ref, seen } = useInView<HTMLElement>()
   const { ref: catRef, seen: catSeen } = useInView<HTMLDivElement>()
+  const reduced = usePrefersReducedMotion()
   const [filter, setFilter] = useState<Filter>("all")
 
   const featured = useMemo(() => projects.filter((p) => p.featured), [])
@@ -212,9 +218,7 @@ export function ProjectsSection() {
 
           {/* more on github */}
           <div
-            className={`mt-8 border-[3px] border-dashed border-neutral-700 bg-ink-2/50 p-5 transition-all duration-700 ${
-              catSeen ? "translate-y-0 opacity-100" : "translate-y-6 opacity-0"
-            }`}
+            className={`mt-8 border-[3px] border-dashed border-neutral-700 bg-ink-2/50 p-5 transition-all duration-700 ${revealClass(catSeen, reduced)}`}
           >
             <div className="font-mono text-xs font-bold tracking-widest text-muted-foreground">
               <span className="text-acid">{"//"}</span> {t(ui.proj_more)}

@@ -3,6 +3,7 @@
 import { Github, Linkedin, Mail, ArrowUpRight, Globe } from "lucide-react"
 import { useNav } from "@/components/transition/transition-provider"
 import { useInView } from "@/components/use-in-view"
+import { usePrefersReducedMotion, revealClass } from "@/components/use-prefers-reduced-motion"
 import { useLang } from "@/components/i18n/lang-provider"
 import { ScrambleText } from "@/components/scramble-text"
 import { ui } from "@/lib/i18n"
@@ -18,6 +19,7 @@ export function Footer() {
   const { goTo } = useNav()
   const { t } = useLang()
   const { ref, seen } = useInView<HTMLElement>()
+  const reduced = usePrefersReducedMotion()
 
   return (
     <footer id="contact" ref={ref} className="relative overflow-hidden bg-ink-2">
@@ -39,9 +41,7 @@ export function Footer() {
         </p>
 
         <div
-          className={`mt-8 flex flex-wrap items-center gap-3 transition-all delay-150 duration-700 ${
-            seen ? "translate-y-0 opacity-100" : "translate-y-6 opacity-0"
-          }`}
+          className={`mt-8 flex flex-wrap items-center gap-3 transition-all delay-150 duration-700 ${revealClass(seen, reduced)}`}
         >
           <a
             href={profile.links.email}

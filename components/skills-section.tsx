@@ -2,6 +2,7 @@
 
 import { ScrambleText } from "@/components/scramble-text"
 import { useInView } from "@/components/use-in-view"
+import { usePrefersReducedMotion, revealClass } from "@/components/use-prefers-reduced-motion"
 import { useLang } from "@/components/i18n/lang-provider"
 import { ui } from "@/lib/i18n"
 import { skills } from "@/lib/resume"
@@ -10,6 +11,7 @@ const GROUP_ACCENT = ["var(--acid)", "var(--hot)", "var(--cyan)", "var(--violet)
 
 export function SkillsSection() {
   const { ref, seen } = useInView<HTMLElement>()
+  const reduced = usePrefersReducedMotion()
   const { t } = useLang()
 
   return (
@@ -27,9 +29,7 @@ export function SkillsSection() {
             return (
               <div
                 key={group.label}
-                className={`border-[3px] border-black bg-ink-2 p-5 brutal-sm transition-all duration-500 ${
-                  seen ? "translate-y-0 opacity-100" : "translate-y-6 opacity-0"
-                }`}
+                className={`border-[3px] border-black bg-ink-2 p-5 brutal-sm transition-all duration-500 ${revealClass(seen, reduced)}`}
                 style={{ ["--bs" as string]: accent, transitionDelay: `${gi * 60}ms` }}
               >
                 <div className="mb-3 flex items-center gap-2">
