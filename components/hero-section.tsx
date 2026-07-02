@@ -7,13 +7,31 @@ import { useNav } from "@/components/transition/transition-provider"
 import { useLang } from "@/components/i18n/lang-provider"
 import { ui } from "@/lib/i18n"
 import { profile } from "@/lib/profile"
-import { IdCardStatic } from "@/components/three/id-card-3d"
+import { IdCardStatic } from "@/components/three/id-card-static"
 
 // keep the WebGL canvas out of the server bundle
 const IdCard3D = dynamic(
   () => import("@/components/three/id-card-3d").then((m) => m.IdCard3D),
   { ssr: false, loading: () => <IdCardStatic className="h-full w-full" /> },
 )
+
+// Mount the WebGL card on the visitor's first interaction (pointer move,
+// touch, scroll or key). Desktop fires on the first mouse twitch and mobile
+// on the first touch — effectively instant for anyone engaging with the page,
+// and usually already during the boot overlay. A passive load never pays the
+// three.js + shader-compile cost (measured at ~6s of main-thread time on a
+// 4x-throttled mobile), and the static card it keeps is visually identical
+// at rest. The card's 3D-ness only matters once you interact anyway.
+function useFirstInteraction() {
+  const [ready, setReady] = useState(false)
+  useEffect(() => {
+    const on = () => setReady(true)
+    const evs = ["pointermove", "pointerdown", "touchstart", "scroll", "wheel", "keydown"] as const
+    evs.forEach((e) => window.addEventListener(e, on, { once: true, passive: true }))
+    return () => evs.forEach((e) => window.removeEventListener(e, on))
+  }, [])
+  return ready
+}
 
 const TICKER = [
   "UNITY",
@@ -33,6 +51,7 @@ const TICKER = [
 export function HeroSection() {
   const { goTo } = useNav()
   const { lang, t } = useLang()
+  const show3D = useFirstInteraction()
 
   // mobile has no hover cursor, so the tap-to-flip affordance isn't obvious —
   // show a small hint until the card is first tapped (or a few seconds pass)
@@ -112,7 +131,11 @@ export function HeroSection() {
             className="relative mx-auto h-[420px] w-full max-w-[360px] sm:h-[460px]"
             onPointerDown={() => setFlipHintSeen(true)}
           >
-            <IdCard3D mode="hero" className="h-full w-full" />
+            {show3D ? (
+              <IdCard3D mode="hero" className="h-full w-full" />
+            ) : (
+              <IdCardStatic className="h-full w-full" />
+            )}
           </div>
           {/* touch-only affordance — desktop already gets a pointer cursor */}
           {!flipHintSeen && (

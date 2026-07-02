@@ -2,7 +2,7 @@
 
 import { createContext, useCallback, useContext, useEffect, useRef, useState } from "react"
 import { AnimatePresence, motion } from "framer-motion"
-import { IdCard3D } from "@/components/three/id-card-3d"
+import { initials } from "@/components/three/id-card-static"
 import { ScrambleText } from "@/components/scramble-text"
 import { useLang } from "@/components/i18n/lang-provider"
 import { profile } from "@/lib/profile"
@@ -38,6 +38,59 @@ function MiniCard() {
         {/* back */}
         <div className="absolute inset-0 grid place-items-center border-[3px] border-black bg-hot font-mono text-[10px] font-bold text-white [backface-visibility:hidden] [transform:rotateY(180deg)]">
           ID·2026
+        </div>
+      </div>
+    </div>
+  )
+}
+
+/* ------------------------------------------------------------------ */
+/* CSS-3D boot card — the boot screen must not pay for WebGL: the old  */
+/* three.js loading card put a ~900KB chunk + a shader compile in the  */
+/* critical path. This is the same spinning-ID look in pure CSS.       */
+/* ------------------------------------------------------------------ */
+function BootCard() {
+  return (
+    <div className="[perspective:1100px]">
+      <div
+        className="relative h-[300px] w-[215px] animate-spin-y [transform-style:preserve-3d]"
+        style={{ animationDuration: "3.4s" }}
+      >
+        {/* front — compact ID face (mirrors IdCardStatic) */}
+        <div className="absolute inset-0 flex flex-col border-[3px] border-black bg-paper [backface-visibility:hidden]">
+          <div className="flex items-center justify-between border-b-[3px] border-black bg-acid px-2.5 py-1.5 font-mono text-[9px] font-bold text-ink">
+            <span>{"// ACCESS"}</span>
+            <span>ALL·AREAS</span>
+          </div>
+          <div className="relative mx-auto mt-3 aspect-square w-[104px] overflow-hidden border-[3px] border-black bg-[#161616]">
+            {profile.photoUrl ? (
+              // eslint-disable-next-line @next/next/no-img-element
+              <img
+                src={profile.photoUrl}
+                alt=""
+                className="absolute inset-0 h-full w-full object-cover grayscale"
+                style={{ objectPosition: "50% 28%" }}
+              />
+            ) : (
+              <div className="absolute inset-0 grid place-items-center font-black text-2xl text-acid">{initials()}</div>
+            )}
+            <div className="absolute left-0 top-0 h-0 w-0 border-l-[16px] border-t-[16px] border-l-acid border-t-transparent" />
+          </div>
+          <div className="mt-2 text-center font-black leading-none text-ink">
+            <div className="text-sm">{profile.firstName}</div>
+            <div className="text-sm">{profile.lastName}</div>
+          </div>
+          <div className="mx-2.5 mt-1.5 bg-hot py-0.5 text-center font-mono text-[8px] font-bold text-white">
+            {profile.roleCard}
+          </div>
+          <div className="mt-auto border-t-[3px] border-black py-1 text-center font-mono text-[8px] font-bold text-ink">
+            {profile.site}
+          </div>
+        </div>
+        {/* back */}
+        <div className="absolute inset-0 flex flex-col items-center justify-center gap-2 border-[3px] border-black bg-ink [backface-visibility:hidden] [transform:rotateY(180deg)]">
+          <span className="font-mono text-xs font-bold tracking-widest text-hot">{"// ENCRYPTED"}</span>
+          <span className="font-mono text-[10px] font-bold tracking-widest text-paper">{profile.idNo}</span>
         </div>
       </div>
     </div>
@@ -129,10 +182,8 @@ export function TransitionProvider({ children }: { children: React.ReactNode }) 
             <div className="retro-grid pointer-events-none absolute inset-0 opacity-70" />
             <div className="scanlines pointer-events-none absolute inset-0 opacity-30" />
 
-            {/* spinning 3D card */}
-            <div className="relative h-[300px] w-[230px]">
-              <IdCard3D mode="loading" className="h-full w-full" />
-            </div>
+            {/* spinning card (pure CSS — no WebGL in the boot path) */}
+            <BootCard />
 
             {/* decrypting name */}
             <ScrambleText
