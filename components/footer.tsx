@@ -71,7 +71,7 @@ export function Footer() {
       {/* footer bar */}
       <div className="relative border-t-[3px] border-black bg-ink">
         <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-4 px-4 py-6 sm:flex-row">
-          <button onClick={() => goTo("top", "HOME")} className="flex items-center gap-2" aria-label="Home">
+          <button onClick={() => goTo("top", "HOME")} className="flex items-center gap-2">
             <span
               className="grid h-8 w-8 place-items-center border-[3px] border-black bg-acid font-black text-ink"
               style={{ ["--bs" as string]: "var(--hot)" }}
@@ -79,6 +79,7 @@ export function Footer() {
               F
             </span>
             <span className="font-mono text-xs font-bold tracking-[0.25em] text-paper">{profile.fullName.toUpperCase()}</span>
+            <span className="sr-only"> — home</span>
           </button>
 
           <div className="flex flex-col items-center gap-1 text-center sm:items-end sm:text-right">

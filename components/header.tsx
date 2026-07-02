@@ -19,14 +19,16 @@ function LangToggle({ className = "" }: { className?: string }) {
   return (
     <button
       onClick={toggle}
-      aria-label="Toggle language"
       className={`inline-flex items-center gap-1.5 border-[3px] border-black bg-paper px-2.5 font-mono text-xs font-bold text-ink brutal-press ${className}`}
       style={{ ["--bs" as string]: "var(--violet)" }}
     >
-      <Languages className="h-4 w-4" />
-      <span className={lang === "en" ? "text-ink" : "text-neutral-400"}>EN</span>
-      <span className="text-neutral-400">/</span>
-      <span className={lang === "tr" ? "text-ink" : "text-neutral-400"}>TR</span>
+      {/* sr-only prefix makes the accessible name "Switch language: EN / TR" —
+          it contains the visible "EN / TR", satisfying WCAG 2.5.3 (label in name) */}
+      <Languages className="h-4 w-4" aria-hidden="true" />
+      <span className="sr-only">Switch language: </span>
+      <span className={lang === "en" ? "text-ink" : "text-neutral-600"}>EN</span>
+      <span className="text-neutral-600">/</span>
+      <span className={lang === "tr" ? "text-ink" : "text-neutral-600"}>TR</span>
     </button>
   )
 }
@@ -45,7 +47,7 @@ export function Header() {
     <header className="sticky top-0 z-[90] border-b-[3px] border-black bg-ink/85 backdrop-blur-md">
       <div className="mx-auto flex h-[72px] max-w-6xl items-center justify-between px-4">
         {/* logo */}
-        <button onClick={() => jump("top", "HOME")} className="flex items-center gap-2" aria-label="Home">
+        <button onClick={() => jump("top", "HOME")} className="flex items-center gap-2">
           <span
             className="grid h-9 w-9 place-items-center border-[3px] border-black bg-acid font-black text-ink brutal-press"
             style={{ ["--bs" as string]: "var(--hot)" }}
@@ -53,6 +55,7 @@ export function Header() {
             F
           </span>
           <span className="hidden font-mono text-sm font-bold tracking-[0.25em] sm:inline">KARAFIL</span>
+          <span className="sr-only"> — home</span>
         </button>
 
         {/* desktop nav */}
