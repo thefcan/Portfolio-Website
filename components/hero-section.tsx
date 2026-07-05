@@ -9,6 +9,8 @@ import { ui } from "@/lib/i18n"
 import { profile } from "@/lib/profile"
 import { IdCardStatic } from "@/components/three/id-card-static"
 import { ScrollVelocity } from "@/components/ScrollVelocity"
+import RotatingText from "@/components/RotatingText"
+import { usePrefersReducedMotion } from "@/components/use-prefers-reduced-motion"
 
 // keep the WebGL canvas out of the server bundle
 const IdCard3D = dynamic(
@@ -65,6 +67,12 @@ export function HeroSection() {
   const { goTo } = useNav()
   const { lang, t } = useLang()
   const show3D = useFirstInteraction()
+  const reduced = usePrefersReducedMotion()
+
+  // role badge cycles through the hats; width pinned to the longest phrase
+  // (mono font, so `ch` is exact) so the tagline next to it never shifts
+  const roles = profile.rolesCycle.map((r) => t(r))
+  const rolesCh = Math.max(...roles.map((s) => s.length))
 
   // mobile has no hover cursor, so the tap-to-flip affordance isn't obvious —
   // show a small hint until the card is first tapped (or a few seconds pass)
@@ -100,7 +108,21 @@ export function HeroSection() {
           </h1>
 
           <div className="mt-5 flex flex-wrap items-center gap-2">
-            <span className="bg-hot px-3 py-1 font-mono text-sm font-bold uppercase text-white">{t(profile.role)}</span>
+            <span
+              className="inline-flex items-center justify-center bg-hot px-3 py-1 font-mono text-sm font-bold uppercase text-white"
+              style={{ minWidth: `${rolesCh}ch` }}
+            >
+              {reduced ? (
+                t(profile.rolesCycle[0])
+              ) : (
+                <RotatingText
+                  texts={roles}
+                  mainClassName="justify-center"
+                  rotationInterval={2600}
+                  staggerDuration={0.025}
+                />
+              )}
+            </span>
             <span className="font-mono text-sm font-bold text-paper">// {profile.tagline}</span>
           </div>
 

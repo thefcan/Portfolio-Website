@@ -11,6 +11,13 @@ export const profile = {
   role: { en: "Computer Engineer", tr: "Bilgisayar Mühendisi" } as LText,
   // fixed string baked onto the 3D ID-card texture
   roleCard: "COMPUTER ENGINEER",
+  // hats cycled by the hero role badge — pre-uppercased so the Turkish İ/ı
+  // never depends on CSS text-transform (SSR ships <html lang="en">)
+  rolesCycle: [
+    { en: "COMPUTER ENGINEER", tr: "BİLGİSAYAR MÜHENDİSİ" },
+    { en: "GAME DEVELOPER", tr: "OYUN GELİŞTİRİCİ" },
+    { en: "BACKEND & DEVOPS", tr: "BACKEND & DEVOPS" },
+  ] as LText[],
   tagline: "Games + Backend / DevOps",
   idNo: "ID·2026-CS-0007",
   location: "Türkiye",
