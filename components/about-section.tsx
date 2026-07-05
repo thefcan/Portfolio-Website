@@ -2,6 +2,7 @@
 
 import { Briefcase, GraduationCap, Gamepad2, Server } from "lucide-react"
 import { ScrambleText } from "@/components/scramble-text"
+import CountUp from "@/components/CountUp"
 import { useInView } from "@/components/use-in-view"
 import { usePrefersReducedMotion, revealClass } from "@/components/use-prefers-reduced-motion"
 import { useLang } from "@/components/i18n/lang-provider"
@@ -61,13 +62,25 @@ export function AboutSection() {
           <div className={`grid grid-cols-2 gap-4 transition-all duration-700 ${revealClass(seen, reduced)}`}>
             {stats.map((s, i) => {
               const accents = ["var(--acid)", "var(--hot)", "var(--cyan)", "var(--amber)"]
+              // "16+" → count to 16, keep the "+" suffix; reduced motion shows
+              // the final value straight away
+              const m = /^(\d+)(.*)$/.exec(s.value)
               return (
                 <div
                   key={s.label.en}
                   className="grid place-items-center border-[3px] border-black bg-paper p-5 text-ink brutal"
                   style={{ ["--bs" as string]: accents[i % accents.length] }}
                 >
-                  <span className="font-black text-4xl leading-none sm:text-5xl">{s.value}</span>
+                  <span className="font-black text-4xl leading-none sm:text-5xl">
+                    {reduced || !m ? (
+                      s.value
+                    ) : (
+                      <>
+                        <CountUp to={parseInt(m[1], 10)} duration={1} startWhen={seen} />
+                        {m[2]}
+                      </>
+                    )}
+                  </span>
                   <span className="mt-2 font-mono text-[10px] font-bold tracking-widest">{t(s.label)}</span>
                 </div>
               )
