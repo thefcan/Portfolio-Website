@@ -10,6 +10,7 @@ import { profile } from "@/lib/profile"
 import { IdCardStatic } from "@/components/three/id-card-static"
 import { ScrollVelocity } from "@/components/ScrollVelocity"
 import RotatingText from "@/components/RotatingText"
+import GlitchText from "@/components/GlitchText"
 import { usePrefersReducedMotion } from "@/components/use-prefers-reduced-motion"
 
 // keep the WebGL canvas out of the server bundle
@@ -102,9 +103,14 @@ export function HeroSection() {
 
           <p className="mt-5 font-mono text-sm font-bold text-acid sm:text-base">{t(ui.hero_greeting)}</p>
 
+          {/* hover the name for an RGB-split glitch (CSS-only, zero idle cost) */}
           <h1 className="mt-2 font-black uppercase leading-[0.92] tracking-tight">
-            <span className="block text-5xl sm:text-6xl lg:text-7xl">{profile.firstName}</span>
-            <span className="block text-5xl text-acid sm:text-6xl lg:text-7xl">{profile.lastName}</span>
+            <GlitchText enableOnHover speed={0.6} className="block text-5xl sm:text-6xl lg:text-7xl">
+              {profile.firstName}
+            </GlitchText>
+            <GlitchText enableOnHover speed={0.6} className="block text-5xl text-acid sm:text-6xl lg:text-7xl">
+              {profile.lastName}
+            </GlitchText>
           </h1>
 
           <div className="mt-5 flex flex-wrap items-center gap-2">
