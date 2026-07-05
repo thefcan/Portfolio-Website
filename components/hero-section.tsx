@@ -8,6 +8,7 @@ import { useLang } from "@/components/i18n/lang-provider"
 import { ui } from "@/lib/i18n"
 import { profile } from "@/lib/profile"
 import { IdCardStatic } from "@/components/three/id-card-static"
+import { ScrollVelocity } from "@/components/ScrollVelocity"
 
 // keep the WebGL canvas out of the server bundle
 const IdCard3D = dynamic(
@@ -47,6 +48,18 @@ const TICKER = [
   "TYPESCRIPT",
   "FREERTOS",
 ]
+
+// one full row of tags — ScrollVelocity tiles copies of it edge to edge.
+// Module-level so the node identity is stable across hero re-renders.
+const TICKER_ROW = (
+  <>
+    {TICKER.map((tag) => (
+      <span key={tag} className="mx-4 inline-flex items-center gap-4">
+        {tag} <span className="text-hot">◆</span>
+      </span>
+    ))}
+  </>
+)
 
 export function HeroSection() {
   const { goTo } = useNav()
@@ -149,15 +162,14 @@ export function HeroSection() {
         </div>
       </div>
 
-      {/* ---- ticker ---- */}
-      <div className="relative overflow-hidden border-t-[3px] border-black bg-acid py-2">
-        <div className="flex w-max animate-marquee whitespace-nowrap font-mono text-sm font-bold text-ink">
-          {[...TICKER, ...TICKER].map((tag, i) => (
-            <span key={i} className="mx-4 inline-flex items-center gap-4">
-              {tag} <span className="text-hot">◆</span>
-            </span>
-          ))}
-        </div>
+      {/* ---- ticker — drifts like the old marquee, but reacts to scroll
+           velocity (speeds up with the scroll, flips direction on scroll-up).
+           Decorative tag soup, so hidden from screen readers. ---- */}
+      <div
+        aria-hidden="true"
+        className="relative overflow-hidden border-t-[3px] border-black bg-acid py-2 font-mono text-sm font-bold text-ink"
+      >
+        <ScrollVelocity texts={[TICKER_ROW]} velocity={-40} numCopies={4} />
       </div>
     </section>
   )

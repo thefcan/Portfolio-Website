@@ -148,7 +148,6 @@
   /* animations */
   --animate-blink: blink 1s step-end infinite;
   --animate-float: float 6s ease-in-out infinite;
-  --animate-marquee: marquee 30s linear infinite;
   --animate-scan: scan 6s linear infinite;
   --animate-spin-slow: spin 14s linear infinite;
   --animate-spin-y: spinY 1.4s linear infinite;
@@ -284,16 +283,16 @@
 }
 
 /* reduced motion (macOS: Settings › Accessibility › Display › Reduce Motion).
-   Policy: stop everything that *travels* — smooth scroll, the ambient ticker /
-   spin / bounce / float / scan loops — while keeping calm opacity cues (the
-   blink cursor, section fades). Scramble headings resolve instantly and the
-   scroll-reveals + framer cards drop their slide in JS (usePrefersReducedMotion,
-   revealClass); the 3D card softens its own motion. */
+   Policy: stop everything that *travels* — smooth scroll, the ambient spin /
+   bounce / float / scan loops — while keeping calm opacity cues (the blink
+   cursor, section fades). Scramble headings resolve instantly, the hero ticker
+   (ScrollVelocity) parks its rAF loop, and the scroll-reveals + framer cards
+   drop their slide in JS (usePrefersReducedMotion, revealClass); the 3D card
+   softens its own motion. */
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
   }
-  .animate-marquee,
   .animate-float,
   .animate-scan,
   .animate-spin-slow,
