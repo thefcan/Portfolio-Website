@@ -74,4 +74,12 @@ export const ui = {
     en: "A new game studio, a backend team, or an interesting systems problem — I'm open to internships and remote roles. Drop a message, let's talk.",
     tr: "Yeni bir oyun stüdyosu, bir backend ekibi ya da ilginç bir systems problemi — internship ve remote fırsatlarına açığım. Bir mesaj at, konuşalım.",
   },
+
+  // 404
+  nf_kicker: { en: "// LOST IN THE GRID", tr: "// GRID'DE KAYIP" },
+  nf_body: {
+    en: "This page doesn't exist — the arcade ate your quarter. Head back and keep playing.",
+    tr: "Böyle bir sayfa yok — jetonu makine yuttu. Geri dön, oyuna devam.",
+  },
+  nf_home: { en: "INSERT COIN · BACK TO HOME", tr: "JETON AT · ANA SAYFAYA DÖN" },
 } satisfies Record<string, LText>
