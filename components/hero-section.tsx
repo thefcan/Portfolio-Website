@@ -11,6 +11,7 @@ import { IdCardStatic } from "@/components/three/id-card-static"
 import { ScrollVelocity } from "@/components/ScrollVelocity"
 import RotatingText from "@/components/RotatingText"
 import GlitchText from "@/components/GlitchText"
+import CircularText from "@/components/CircularText"
 import { usePrefersReducedMotion } from "@/components/use-prefers-reduced-motion"
 
 // keep the WebGL canvas out of the server bundle
@@ -177,6 +178,19 @@ export function HeroSection() {
             ) : (
               <IdCardStatic className="h-full w-full" />
             )}
+            {/* rotating sticker pinned to the card corner — decorative, the
+                same info lives in the AVAILABLE badge for screen readers */}
+            <div
+              aria-hidden="true"
+              className="pointer-events-none absolute -right-4 -top-4 z-10 hidden rounded-full border-[3px] border-black bg-ink p-1.5 brutal-sm sm:block"
+              style={{ ["--bs" as string]: "var(--hot)" }}
+            >
+              <CircularText
+                text={t(ui.hero_badge_circle)}
+                spinDuration={24}
+                className="h-28 w-28 font-mono text-[10px] font-bold tracking-widest text-acid"
+              />
+            </div>
           </div>
           {/* touch-only affordance — desktop already gets a pointer cursor */}
           {!flipHintSeen && (

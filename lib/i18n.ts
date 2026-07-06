@@ -27,6 +27,8 @@ export const ui = {
   },
   hero_cta_projects: { en: "PROJECTS", tr: "PROJELER" },
   hero_cta_contact: { en: "CONTACT", tr: "İLETİŞİM" },
+  // rotating sticker on the ID card — trailing separator keeps the circle even
+  hero_badge_circle: { en: "OPEN TO WORK • GAMES + BACKEND • ", tr: "ÇALIŞMAYA AÇIĞIM • OYUN + BACKEND • " },
   hero_hint: { en: "tilt with mouse · 3D", tr: "mouse ile eğ · 3D" },
 
   // about
