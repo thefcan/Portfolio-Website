@@ -6,6 +6,7 @@ import { useInView } from "@/components/use-in-view"
 import { usePrefersReducedMotion, revealClass } from "@/components/use-prefers-reduced-motion"
 import { useLang } from "@/components/i18n/lang-provider"
 import { ScrambleText } from "@/components/scramble-text"
+import StarBorder from "@/components/StarBorder"
 import { ui } from "@/lib/i18n"
 import { profile } from "@/lib/profile"
 
@@ -43,15 +44,22 @@ export function Footer() {
         <div
           className={`mt-8 flex flex-wrap items-center gap-3 transition-all delay-150 duration-700 ${revealClass(seen, reduced)}`}
         >
-          <a
+          {/* hot spark orbits in the 3px gap between the black frame and the
+              acid fill — the main conversion CTA earns the neon treatment */}
+          <StarBorder
+            as="a"
             href={profile.links.email}
-            className="group inline-flex min-w-0 max-w-full items-center gap-2 border-[3px] border-black bg-acid px-4 py-3 font-mono text-sm font-bold text-ink brutal-press sm:px-5"
+            color="var(--hot)"
+            speed="5s"
+            thickness={3}
+            className="group min-w-0 max-w-full border-[3px] border-black bg-ink font-mono text-sm font-bold text-ink brutal-press"
+            innerClassName="flex min-w-0 items-center gap-2 bg-acid px-4 py-3 sm:px-5"
             style={{ ["--bs" as string]: "#000" }}
           >
             <Mail className="h-4 w-4 shrink-0" />
             <span className="min-w-0 break-all">{profile.email}</span>
             <ArrowUpRight className="h-4 w-4 shrink-0 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
-          </a>
+          </StarBorder>
           {SOCIALS.map((s) => (
             <a
               key={s.name}
