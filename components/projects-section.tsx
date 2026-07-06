@@ -4,6 +4,7 @@ import { useMemo, useState } from "react"
 import { AnimatePresence, motion } from "framer-motion"
 import { Github, ExternalLink, Lock, Star } from "lucide-react"
 import { ScrambleText } from "@/components/scramble-text"
+import SpotlightCard from "@/components/SpotlightCard"
 import { useInView } from "@/components/use-in-view"
 import { usePrefersReducedMotion, revealClass } from "@/components/use-prefers-reduced-motion"
 import { useLang } from "@/components/i18n/lang-provider"
@@ -49,6 +50,10 @@ function ProjectCard({ p, compact = false, index = 0 }: { p: Project; compact?: 
       className="group flex flex-col border-[3px] border-black bg-ink-2 brutal-sm"
       style={{ ["--bs" as string]: accent }}
     >
+      <SpotlightCard
+        spotlightColor={`color-mix(in srgb, ${accent} 14%, transparent)`}
+        className="flex flex-1 flex-col"
+      >
       {/* top strip */}
       <div className="flex items-center gap-3 border-b-[3px] border-black px-4 py-2" style={{ background: accent }}>
         <span className="font-mono text-sm font-black text-ink">{p.no}</span>
@@ -123,6 +128,7 @@ function ProjectCard({ p, compact = false, index = 0 }: { p: Project; compact?: 
           )}
         </div>
       </div>
+      </SpotlightCard>
     </motion.article>
   )
 }
