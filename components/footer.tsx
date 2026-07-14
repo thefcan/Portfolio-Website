@@ -7,6 +7,7 @@ import { usePrefersReducedMotion, revealClass } from "@/components/use-prefers-r
 import { useLang } from "@/components/i18n/lang-provider"
 import { ScrambleText } from "@/components/scramble-text"
 import StarBorder from "@/components/StarBorder"
+import Magnet from "@/components/Magnet"
 import { ui } from "@/lib/i18n"
 import { profile } from "@/lib/profile"
 
@@ -60,18 +61,21 @@ export function Footer() {
             <span className="min-w-0 break-all">{profile.email}</span>
             <ArrowUpRight className="h-4 w-4 shrink-0 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
           </StarBorder>
+          {/* social tiles lean toward the cursor from ~56px out (max pull
+              ~11px) — reduced-motion visitors get static tiles */}
           {SOCIALS.map((s) => (
-            <a
-              key={s.name}
-              href={s.href}
-              target="_blank"
-              rel="noreferrer"
-              aria-label={s.name}
-              className="grid h-12 w-12 place-items-center border-[3px] border-black bg-ink text-paper brutal-press"
-              style={{ ["--bs" as string]: s.accent }}
-            >
-              <s.icon className="h-5 w-5" />
-            </a>
+            <Magnet key={s.name} padding={56} magnetStrength={7}>
+              <a
+                href={s.href}
+                target="_blank"
+                rel="noreferrer"
+                aria-label={s.name}
+                className="grid h-12 w-12 place-items-center border-[3px] border-black bg-ink text-paper brutal-press"
+                style={{ ["--bs" as string]: s.accent }}
+              >
+                <s.icon className="h-5 w-5" />
+              </a>
+            </Magnet>
           ))}
         </div>
       </div>
