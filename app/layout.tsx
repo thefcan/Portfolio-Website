@@ -5,7 +5,7 @@ import { Analytics } from "@vercel/analytics/next"
 import { ThemeProvider } from "@/components/theme-provider"
 import { LangProvider } from "@/components/i18n/lang-provider"
 import { TransitionProvider } from "@/components/transition/transition-provider"
-import ClickSpark from "@/components/ClickSpark"
+import TargetCursor from "@/components/TargetCursor"
 import "./globals.css"
 
 const grotesk = Space_Grotesk({
@@ -92,8 +92,9 @@ export default function RootLayout({
             <TransitionProvider>{children}</TransitionProvider>
           </LangProvider>
         </ThemeProvider>
-        {/* arcade spark burst on every click/tap — draws only while bursting */}
-        <ClickSpark />
+        {/* arcade target reticle trailing the pointer — corners lock onto
+            links/buttons; desktop-only decoration, native cursor stays */}
+        <TargetCursor />
         <Analytics />
       </body>
     </html>

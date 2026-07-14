@@ -155,6 +155,7 @@
   --animate-spin-y: spinY 1.4s linear infinite;
   --animate-star-movement-bottom: star-movement-bottom 6s linear infinite alternate;
   --animate-star-movement-top: star-movement-top 6s linear infinite alternate;
+  --animate-target-spin: spin 6s linear infinite;
 }
 
 @layer base {
@@ -335,6 +336,7 @@
   .animate-bounce,
   .animate-star-movement-bottom,
   .animate-star-movement-top,
+  .animate-target-spin,
   [class*="animate-[marquee"] {
     animation: none !important;
   }
