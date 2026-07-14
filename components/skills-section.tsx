@@ -1,6 +1,7 @@
 "use client"
 
 import { ScrambleText } from "@/components/scramble-text"
+import GlareHover from "@/components/GlareHover"
 import { useInView } from "@/components/use-in-view"
 import { usePrefersReducedMotion, revealClass } from "@/components/use-prefers-reduced-motion"
 import { useLang } from "@/components/i18n/lang-provider"
@@ -27,8 +28,14 @@ export function SkillsSection() {
           {skills.map((group, gi) => {
             const accent = GROUP_ACCENT[gi % GROUP_ACCENT.length]
             return (
-              <div
+              // hover sweeps an accent-tinted glare band across the card —
+              // two style writes on enter/leave, nothing runs at idle
+              <GlareHover
                 key={group.label}
+                glareColor={accent}
+                glareOpacity={0.3}
+                glareSize={300}
+                transitionDuration={700}
                 className={`border-[3px] border-black bg-ink-2 p-5 brutal-sm transition-all duration-500 ${revealClass(seen, reduced)}`}
                 style={{ ["--bs" as string]: accent, transitionDelay: `${gi * 60}ms` }}
               >
@@ -53,7 +60,7 @@ export function SkillsSection() {
                     </span>
                   ))}
                 </div>
-              </div>
+              </GlareHover>
             )
           })}
         </div>
