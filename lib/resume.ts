@@ -6,14 +6,14 @@ import type { LText } from "@/lib/i18n"
 export type SkillGroup = { label: string; items: string[]; soon?: boolean }
 
 export const skills: SkillGroup[] = [
-  { label: "LANGUAGES", items: ["Python", "Go", "TypeScript", "JavaScript", "Rust", "Java", "C", "C#", "PHP"] },
+  { label: "LANGUAGES", items: ["Python", "Go", "TypeScript", "JavaScript", "Rust", "Java", "C", "C++", "C#", "PHP"] },
   { label: "BACKEND", items: ["NestJS", "FastAPI", "Express", "Axum", "net/http", "REST APIs", "Microservices"] },
-  { label: "DEVOPS & INFRA", items: ["Docker", "GitHub Actions", "CI/CD", "Linux", "Bash", "Server Admin"] },
+  { label: "DEVOPS & INFRA", items: ["Docker", "Kubernetes", "GitHub Actions", "CI/CD", "Linux", "Bash", "Server Admin"] },
   { label: "DATA", items: ["PostgreSQL", "pgvector", "Prisma", "Redis", "SQLite", "Firebase"] },
   { label: "FRONTEND", items: ["React", "Next.js", "React Native", "Tailwind CSS"] },
   { label: "ML & DATA", items: ["TensorFlow / Keras", "XGBoost", "scikit-learn", "pandas", "RAG"] },
   { label: "GAMES", items: ["Unity", "C#", "Design Patterns", "Gameplay Systems"] },
-  { label: "EXPLORING", items: ["Kubernetes", "LangChain", "LangGraph"], soon: true },
+  { label: "EXPLORING", items: ["LangChain", "LangGraph"], soon: true },
 ]
 
 export type Experience = {

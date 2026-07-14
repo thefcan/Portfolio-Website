@@ -120,8 +120,68 @@ export const projects: Project[] = [
     links: { repo: "https://github.com/thefcan/ragdesk" },
   },
   {
-    id: "reveil",
+    id: "femheat",
     no: "04",
+    title: "femheat",
+    badge: { en: "SYSTEMS · C++", tr: "SİSTEM · C++" },
+    subtitle: {
+      en: "2D FEM HEAT-CONDUCTION SOLVER IN MODERN C++17 — VALIDATED BY MMS",
+      tr: "MODERN C++17 İLE 2D FEM HEAT-CONDUCTION SOLVER — MMS İLE DOĞRULANDI",
+    },
+    blurb: {
+      en: "A 2D steady-state heat-conduction FEM solver in modern C++17 — element assembly and solver written from scratch, validated by the Method of Manufactured Solutions.",
+      tr: "Modern C++17 ile 2D steady-state heat-conduction FEM solver — element assembly ve solver sıfırdan yazıldı, Method of Manufactured Solutions ile doğrulandı.",
+    },
+    highlights: {
+      en: [
+        "From-scratch element assembly and solver.",
+        "Method of Manufactured Solutions validation with convergence-rate checks.",
+        "CMake + GoogleTest + CI.",
+      ],
+      tr: [
+        "Sıfırdan element assembly ve solver.",
+        "Convergence-rate check'leriyle Method of Manufactured Solutions doğrulaması.",
+        "CMake + GoogleTest + CI.",
+      ],
+    },
+    stack: ["C++17", "CMake", "GoogleTest", "FEM", "Numerical Methods"],
+    categories: ["systems"],
+    accent: "amber",
+    links: { repo: "https://github.com/thefcan/femheat" },
+  },
+  {
+    id: "k8s-resilience-harness",
+    no: "05",
+    title: "k8s-resilience-harness",
+    badge: { en: "DEVOPS · K8S", tr: "DEVOPS · K8S" },
+    subtitle: {
+      en: "CHAOS-TESTING HARNESS FOR KUBERNETES — FAULT INJECTION & RECOVERY MEASUREMENT",
+      tr: "KUBERNETES İÇİN CHAOS-TESTING HARNESS — FAULT INJECTION & RECOVERY ÖLÇÜMÜ",
+    },
+    blurb: {
+      en: "A chaos-testing harness for Kubernetes — pod-kill fault injection with steady-state hypothesis verdicts and recovery-time measurement, tested against client-go fakes and a kind cluster in CI.",
+      tr: "Kubernetes için bir chaos-testing harness — steady-state hypothesis verdict'leriyle pod-kill fault injection ve recovery-time ölçümü; client-go fake'leri ve CI'da kind cluster ile test edildi.",
+    },
+    highlights: {
+      en: [
+        "Pod-kill fault injection with steady-state hypothesis verdicts.",
+        "Recovery-time measurement and reporting.",
+        "client-go fake-clientset unit tests + kind-in-CI that fails the build on hypothesis violation.",
+      ],
+      tr: [
+        "Steady-state hypothesis verdict'leriyle pod-kill fault injection.",
+        "Recovery-time ölçümü ve raporlama.",
+        "client-go fake-clientset unit testleri + hypothesis ihlalinde build'i kıran kind-in-CI.",
+      ],
+    },
+    stack: ["Go", "Kubernetes", "client-go", "kind", "Chaos Engineering"],
+    categories: ["systems"],
+    accent: "hot",
+    links: { repo: "https://github.com/thefcan/k8s-resilience-harness" },
+  },
+  {
+    id: "reveil",
+    no: "06",
     title: "Reveil",
     badge: { en: "CAPSTONE · AI", tr: "BİTİRME · AI" },
     subtitle: {
@@ -149,7 +209,7 @@ export const projects: Project[] = [
   },
   {
     id: "costsight",
-    no: "05",
+    no: "07",
     title: "CostSight",
     badge: { en: "CLOUD · ML", tr: "CLOUD · ML" },
     subtitle: {
@@ -177,7 +237,7 @@ export const projects: Project[] = [
   },
   {
     id: "gocontainer",
-    no: "06",
+    no: "08",
     title: "gocontainer",
     badge: { en: "GO · LINUX", tr: "GO · LINUX" },
     subtitle: {
@@ -205,7 +265,7 @@ export const projects: Project[] = [
   },
   {
     id: "gochain",
-    no: "07",
+    no: "09",
     title: "gochain",
     badge: { en: "GO · DISTRIBUTED", tr: "GO · DISTRIBUTED" },
     subtitle: {
@@ -233,7 +293,7 @@ export const projects: Project[] = [
   },
   {
     id: "rust-url-shortener",
-    no: "08",
+    no: "10",
     title: "rust-url-shortener",
     badge: { en: "RUST · ASYNC", tr: "RUST · ASYNC" },
     subtitle: {
@@ -261,7 +321,7 @@ export const projects: Project[] = [
   },
   {
     id: "go-rest-task-api",
-    no: "09",
+    no: "11",
     title: "go-rest-task-api",
     badge: { en: "GO · BACKEND", tr: "GO · BACKEND" },
     subtitle: {
@@ -289,7 +349,7 @@ export const projects: Project[] = [
   },
   {
     id: "rtos-process-control",
-    no: "10",
+    no: "12",
     title: "Process Control · RTOS",
     badge: { en: "C · EMBEDDED", tr: "C · EMBEDDED" },
     subtitle: {
@@ -317,7 +377,7 @@ export const projects: Project[] = [
   },
   {
     id: "mips16-pipeline",
-    no: "11",
+    no: "13",
     title: "MIPS16 Pipeline",
     badge: { en: "C · ARCH", tr: "C · ARCH" },
     subtitle: {
@@ -345,7 +405,7 @@ export const projects: Project[] = [
   },
   {
     id: "dolap-sale-prediction",
-    no: "12",
+    no: "14",
     title: "Dolap Sale Prediction",
     badge: { en: "PYTHON · ML", tr: "PYTHON · ML" },
     subtitle: {
@@ -373,7 +433,7 @@ export const projects: Project[] = [
   },
   {
     id: "cnn-mnist",
-    no: "13",
+    no: "15",
     title: "CNN · MNIST",
     badge: { en: "PYTHON · DL", tr: "PYTHON · DL" },
     subtitle: {
