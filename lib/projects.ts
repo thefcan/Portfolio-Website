@@ -413,23 +413,23 @@ export const projects: Project[] = [
       tr: "MNIST RAKAMLARI İÇİN OPTİMİZE EDİLMİŞ CONVOLUTIONAL NETWORK",
     },
     blurb: {
-      en: "Optimised a convolutional network for MNIST digit recognition, tuning architecture and training to reach 99.29% test accuracy.",
-      tr: "MNIST digit recognition için bir convolutional network'ü optimize ettim; architecture ve training tuning ile %99.29 test accuracy.",
+      en: "Optimised a convolutional network for MNIST digit recognition, tuning architecture and training to reach 99.30% test accuracy.",
+      tr: "MNIST digit recognition için bir convolutional network'ü optimize ettim; architecture ve training tuning ile %99.30 test accuracy.",
     },
     highlights: {
       en: [
-        "TensorFlow/Keras CNN; 99.29% test accuracy.",
+        "TensorFlow/Keras CNN; 99.30% test accuracy.",
         "Architecture and training hyperparameter tuning.",
       ],
       tr: [
-        "TensorFlow/Keras CNN; %99.29 test accuracy.",
+        "TensorFlow/Keras CNN; %99.30 test accuracy.",
         "Architecture ve training hyperparameter tuning.",
       ],
     },
     stack: ["TensorFlow", "Keras", "CNN"],
     categories: ["ml"],
     accent: "hot",
-    links: {},
+    links: { repo: "https://github.com/thefcan/mnist-cnn-experiments" },
   },
 ]
 
