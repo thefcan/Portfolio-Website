@@ -73,8 +73,8 @@ export const ui = {
   contact_heading1: { en: "LET'S BUILD", tr: "BERABER" },
   contact_heading2: { en: "SOMETHING TOGETHER", tr: "BİR ŞEY KURALIM" },
   contact_body: {
-    en: "A new game studio, a backend team, or an interesting systems problem — I'm open to internships and remote roles. Drop a message, let's talk.",
-    tr: "Yeni bir oyun stüdyosu, bir backend ekibi ya da ilginç bir systems problemi — internship ve remote fırsatlarına açığım. Bir mesaj at, konuşalım.",
+    en: "A new game studio, a backend team, or an interesting systems problem — I'm open to full-time and remote roles. Drop a message, let's talk.",
+    tr: "Yeni bir oyun stüdyosu, bir backend ekibi ya da ilginç bir systems problemi — full-time ve remote fırsatlarına açığım. Bir mesaj at, konuşalım.",
   },
 
   // 404
