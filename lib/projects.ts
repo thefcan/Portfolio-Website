@@ -376,36 +376,8 @@ export const projects: Project[] = [
     links: {},
   },
   {
-    id: "mips16-pipeline",
-    no: "13",
-    title: "MIPS16 Pipeline",
-    badge: { en: "C · ARCH", tr: "C · ARCH" },
-    subtitle: {
-      en: "A CYCLE-LEVEL SIMULATOR FOR THE MIPS16 INSTRUCTION SET",
-      tr: "MIPS16 INSTRUCTION SET İÇİN CYCLE-LEVEL SİMÜLATÖR",
-    },
-    blurb: {
-      en: "A cycle-level simulator for the MIPS16 instruction set, modelling pipeline stages and the data / control hazards between them.",
-      tr: "MIPS16 instruction set için cycle-level bir simülatör; pipeline stage'leri ve aralarındaki data / control hazard'larını modelliyor.",
-    },
-    highlights: {
-      en: [
-        "Cycle-level pipeline model.",
-        "Detection and resolution of data and control hazards.",
-      ],
-      tr: [
-        "Cycle-level pipeline modeli.",
-        "Data ve control hazard'larının tespiti ve çözümü.",
-      ],
-    },
-    stack: ["C", "Pipelining", "Hazards"],
-    categories: ["systems"],
-    accent: "violet",
-    links: { repo: "https://github.com/Urthella/MIPS16" },
-  },
-  {
     id: "dolap-sale-prediction",
-    no: "14",
+    no: "13",
     title: "Dolap Sale Prediction",
     badge: { en: "PYTHON · ML", tr: "PYTHON · ML" },
     subtitle: {
@@ -433,7 +405,7 @@ export const projects: Project[] = [
   },
   {
     id: "cnn-mnist",
-    no: "15",
+    no: "14",
     title: "CNN · MNIST",
     badge: { en: "PYTHON · DL", tr: "PYTHON · DL" },
     subtitle: {
